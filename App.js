@@ -18,7 +18,7 @@ export default function App() {
   const [enterdBagAmount, setBagAmmount] = useState(0);
   const [enterdBagWeight, setBagWeight] = useState(0);
   const [calculatedDensity, setCalculatedDensity] = useState(0);
-  const [modalVisible, setModalVisible] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
 
   function addSquareMeter(enterdValue) {
     setSquareMeter(parseInt(enterdValue));
