@@ -1,11 +1,11 @@
-import { StyleSheet, View, TextInput, Button } from "react-native";
-import { useState } from "react";
+import { StyleSheet, View, TextInput, Button, Pressable, Text } from "react-native";
+import { cloneElement, useState } from "react";
 
 function DensityInputs(props) {
-    const [enterdSquareMeter, setSquareMeter] = useState('');
-    const [enterdDepth, setDepth] = useState('');
-    const [enterdBagAmount, setBagAmmount] = useState('');
-    const [enterdBagWeight, setBagWeight] = useState('');
+    const [enterdSquareMeter, setSquareMeter] = useState(0);
+    const [enterdDepth, setDepth] = useState(0);
+    const [enterdBagAmount, setBagAmmount] = useState(0);
+    const [enterdBagWeight, setBagWeight] = useState(0);
 
     function addSquareMeter(enterdValue) {
         setSquareMeter(parseInt(enterdValue));
@@ -38,41 +38,52 @@ function DensityInputs(props) {
             <TextInput
                 style={styles.textInput}
                 keyboardType="numeric"
+                returnKeyType="done"
                 placeholder="Kvadrat yta"
+                placeholderTextColor={"#7A7A7A"}
                 value={enterdSquareMeter}
                 onChangeText={addSquareMeter}
             />
             <TextInput
                 style={styles.textInput}
                 keyboardType="numeric"
+                returnKeyType="done"
                 placeholder="Tjocklek"
+                placeholderTextColor={"#7A7A7A"}
                 value={enterdDepth}
                 onChangeText={addDepth}
             />
             <TextInput
                 style={styles.textInput}
                 keyboardType="numeric"
+                returnKeyType="done"
                 placeholder="Antal säck"
+                placeholderTextColor={"#7A7A7A"}
                 value={enterdBagAmount}
                 onChangeText={addBagAmmount}
             />
             <TextInput
                 style={styles.textInput}
                 keyboardType="numeric"
+                returnKeyType="done"
                 placeholder="Säckens vikt"
+                placeholderTextColor={"#7A7A7A"}
                 value={enterdBagWeight}
                 onChangeText={addBagWeight}
             />
             <View style={styles.buttonContainer}>
                 <View style={styles.button}>
-                    <Button onPress={calculateDensityHandler} title="Räkna ut" />
+                    <Pressable onPress={calculateDensityHandler} style={styles.pressableButtons} android_ripple={true}>
+                        <Text style={styles.pressableButtonsText}>Räkna ut</Text>
+                    </Pressable>
                 </View>
                 <View style={styles.button}>
-                    <Button title="Töm" onPress={clearInput} />
+                    <Pressable onPress={clearInput} style={styles.pressableButtons} android_ripple={true}>
+                        <Text style={styles.pressableButtonsText}>Rensa</Text>
+                    </Pressable>
                 </View>
             </View>
         </View>
-
     );
 }
 export default DensityInputs;
@@ -101,4 +112,15 @@ const styles = StyleSheet.create({
         width: 150,
         height: 100,
     },
+    pressableButtons: {
+        width: 150,
+        height: 100,
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: 25,
+    },
+    pressableButtonsText: {
+        fontSize: 24,
+        color: '#F7F7F7',
+    }
 })

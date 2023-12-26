@@ -60,6 +60,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderBottomColor: "gray",
     borderBottomWidth: 1,
+    marginBottom:10,
   },
   headerText: {
     marginTop: 25,
