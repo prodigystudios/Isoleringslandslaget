@@ -1,11 +1,12 @@
 import { StyleSheet, View, TextInput, Button, Pressable, Text } from "react-native";
-import { cloneElement, useState } from "react";
+import { useState } from "react";
+import { SelectList } from "react-native-dropdown-select-list";
 
 function DensityInputs(props) {
     const [enterdSquareMeter, setSquareMeter] = useState(0);
     const [enterdDepth, setDepth] = useState(0);
     const [enterdBagAmount, setBagAmmount] = useState(0);
-    const [enterdBagWeight, setBagWeight] = useState(0);
+    const [selectedInsulationType, setSelectedInsulationType] = useState(0);
 
     function addSquareMeter(enterdValue) {
         setSquareMeter(parseInt(enterdValue));
@@ -16,22 +17,25 @@ function DensityInputs(props) {
     function addBagAmmount(enterdValue) {
         setBagAmmount(parseInt(enterdValue));
     }
-    function addBagWeight(enterdValue) {
-        setBagWeight(parseInt(enterdValue));
-    }
     const calculateDensityHandler = () => {
         const squareMeter = enterdSquareMeter;
         const depth = enterdDepth;
         const bagAmount = enterdBagAmount;
-        const bagWeight = enterdBagWeight;
+        const bagWeight = selectedInsulationType;
         props.calculateDensity(squareMeter, depth, bagAmount, bagWeight);
     }
+
+    const data = [
+        { key: 14, value: 'ekovilla 14 kg' },
+        { key: 15.5, value: 'Glasull 15.5 kg' }
+    ]
+
 
     function clearInput() {
         setSquareMeter("");
         setBagAmmount("");
-        setBagWeight("");
         setDepth("");
+        setSelectedInsulationType("");
     }
     return (
         <View style={styles.textInputContainer}>
@@ -62,15 +66,9 @@ function DensityInputs(props) {
                 value={enterdBagAmount}
                 onChangeText={addBagAmmount}
             />
-            <TextInput
-                style={styles.textInput}
-                keyboardType="numeric"
-                returnKeyType="done"
-                placeholder="Säckens vikt"
-                placeholderTextColor={"#7A7A7A"}
-                value={enterdBagWeight}
-                onChangeText={addBagWeight}
-            />
+            <SelectList placeholder="Välj material" setSelected={(val) => setSelectedInsulationType(val)}
+                data={data}
+                save="key" />
             <View style={styles.buttonContainer}>
                 <View style={styles.button}>
                     <Pressable onPress={calculateDensityHandler} style={styles.pressableButtons} android_ripple={true}>
