@@ -9,9 +9,9 @@ import { useState } from "react";
 import { SelectList } from "react-native-dropdown-select-list";
 
 function DensityInputs(props) {
-  const [enterdSquareMeter, setSquareMeter] = useState(0);
-  const [enterdDepth, setDepth] = useState(0);
-  const [enterdBagAmount, setBagAmmount] = useState(0);
+  const [enterdSquareMeter, setSquareMeter] = useState('');
+  const [enterdDepth, setDepth] = useState('');
+  const [enterdBagAmount, setBagAmmount] = useState('');
   const [selectedInsulationType, setSelectedInsulationType] = useState(0);
 
   function addSquareMeter(enterdValue) {
