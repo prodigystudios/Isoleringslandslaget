@@ -1,20 +1,19 @@
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  Keyboard,
-} from "react-native";
+import { StyleSheet, Text, View, Image, Keyboard } from "react-native";
 
 import ModalView from "./components/ModalView";
 import DensityInputs from "./components/DensityInput";
 export default function App() {
-  const [calculatedDensity, setCalculatedDensity] = useState('');
+  const [calculatedDensity, setCalculatedDensity] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
 
-  function calculateDensity(enterdSquareMeter, enterdDepth, enterdBagAmount, enterdBagWeight) {
+  function calculateDensity(
+    enterdSquareMeter,
+    enterdDepth,
+    enterdBagAmount,
+    enterdBagWeight
+  ) {
     var kubicMeterCalculation = enterdSquareMeter * (enterdDepth / 1000);
     var weightInKilosCalculation = enterdBagAmount * enterdBagWeight;
     setCalculatedDensity(weightInKilosCalculation / kubicMeterCalculation);
@@ -42,7 +41,11 @@ export default function App() {
           </View>
           <DensityInputs calculateDensity={calculateDensity} />
         </View>
-        <ModalView modalVisible={modalVisible} calculatedDensity={calculatedDensity} onCloseModal={CloseModal} />
+        <ModalView
+          modalVisible={modalVisible}
+          calculatedDensity={calculatedDensity}
+          onCloseModal={CloseModal}
+        />
       </View>
     </>
   );
@@ -60,7 +63,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderBottomColor: "gray",
     borderBottomWidth: 1,
-    marginBottom:10,
+    marginBottom: 10,
   },
   headerText: {
     marginTop: 25,
