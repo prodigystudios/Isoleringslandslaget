@@ -10,108 +10,67 @@ export default function App() {
   const [acceptedDensity, setAcceptedDensity] = useState(false);
   const [failedDensity, setFailedDensity] = useState(false);
 
-  function calculateDensity(
-    enterdSquareMeter,
-    enterdDepth,
-    enterdBagAmount,
-    enterdBagWeight,
-    selectedInsulationType,
-    selectedConstrutionType
-  ) {
-    var kubicMeterCalculation = enterdSquareMeter * (enterdDepth / 1000);
-    var weightInKilosCalculation = enterdBagAmount * enterdBagWeight;
-    setCalculatedDensity(weightInKilosCalculation / kubicMeterCalculation);
-    isDensityAccepted(
-      calculatedDensity,
-      selectedInsulationType,
-      selectedConstrutionType
-    );
-    Keyboard.dismiss();
-  }
-  function isDensityAccepted(
-    calculatedDensity,
-    insulationType,
-    selectedConstrutionType
-  ) {
-    switch (insulationType) {
-      case "Cellulosa ekovilla 14 kg":
-        if (selectedConstrutionType === "Vägg/Snedtak") {
-          const minValue = 45;
-          const maxValue = 52;
-          if (calculatedDensity > minValue || calculatedDensity <= maxValue) {
-            console.log("this is true");
-            setAcceptedDensity(true);
-          } else setFailedDensity(true);
-        }
-        else if(selectedConstrutionType === "Vind") {
-          const minValue = 26;
-          const maxValue = 32;
-          if (calculatedDensity > minValue || calculatedDensity <= maxValue) {
-            console.log("this is true");
-            setAcceptedDensity(true);
-          } else setFailedDensity(true);   
-        }
-        else if(selectedConstrutionType === "BottenBjälklag") {
-          const minValue = 42;
-          const maxValue = 48;
-          if (calculatedDensity > minValue || calculatedDensity <= maxValue) {
-            console.log("this is true");
-            setAcceptedDensity(true);
-          } else setFailedDensity(true);   
-        }
-        else if(selectedConstrutionType === "MellanBjälklag") {
-          const minValue = 38;
-          const maxValue = 42;
-          if (calculatedDensity > minValue || calculatedDensity <= maxValue) {
-            console.log("this is true");
-            setAcceptedDensity(true);
-          } else setFailedDensity(true);   
-        }
-        break;
-        //FIXA DENSITERNA FÖR DOM ANDRA MATERIALEN!
-      case "Glasull suprafil 15.5 kg":
-        if (selectedConstrutionType === "Vägg/Snedtak") {
-          console.log(selectedConstrutionType, calculatedDensity);
-          const minValue = 45;
-          const maxValue = 52;
-          if (calculatedDensity > minValue || calculatedDensity <= maxValue) {
-            console.log("this is true");
-            setAcceptedDensity(true);
-          } else setAcceptedDensity(false);
-        }
-        break;
-      case "Träull topcell 14 kg":
-        if (selectedConstrutionType === "Vägg/Snedtak") {
-          console.log(selectedConstrutionType, calculatedDensity);
-          const minValue = 45;
-          const maxValue = 52;
-          if (calculatedDensity > minValue || calculatedDensity <= maxValue) {
-            console.log("this is true");
-            setAcceptedDensity(true);
-          } else setAcceptedDensity(false);
-        }
-        break;
-      case "Träull topcell 12 kg":
-        if (selectedConstrutionType === "Vägg/Snedtak") {
-          console.log(selectedConstrutionType, calculatedDensity);
-          const minValue = 45;
-          const maxValue = 52;
-          if (calculatedDensity > minValue || calculatedDensity <= maxValue) {
-            console.log("this is true");
-            setAcceptedDensity(true);
-          } else setAcceptedDensity(false);
-        }
-        break;
-      default:
-        break;
-    }
+  const densityTypes = [
+    {
+      index: 1,
+      name: "Cellulosa ekovilla 14 kg",
+      value: "Vind",
+      minValue: 26,
+      maxValue: 30,
+    },
+    {
+      index: 2,
+      name: "Cellulosa ekovilla 14 kg",
+      value: "Vägg/Snedtak",
+      minValue: 45,
+      maxValue: 53,
+    },
+    {
+      index: 3,
+      name: "Cellulosa ekovilla 14 kg",
+      value: "BottenBjälklag",
+      minValue: 42,
+      maxValue: 48,
+    },
+    {
+      index: 4,
+      name: "Cellulosa ekovilla 14 kg",
+      value: "MellanBjälklag",
+      minValue: 38,
+      maxValue: 42,
+    },
+  ];
 
+  function run(
+    calculatedDensityy,
+    selectedConstructionType,
+    selectedInsulationType
+  ) {
+    setCalculatedDensity(calculatedDensityy);
+    const selectedInsulationAndType = densityTypes.find(
+      (element) =>
+        element.name === selectedInsulationType &&
+        element.value === selectedConstructionType
+    );
+    if (
+      calculatedDensityy >= selectedInsulationAndType.minValue &&
+      calculatedDensityy <= selectedInsulationAndType.maxValue
+    ) {
+      setAcceptedDensity(true);
+      OpenModal();
+    } else {
+      setFailedDensity(true);
+      OpenModal();
+    }
+  }
+  function OpenModal() {
     setModalVisible(true);
   }
   function CloseModal() {
     setModalVisible(false);
+    setAcceptedDensity(false);
+    setFailedDensity(false);
   }
-
   return (
     <>
       <StatusBar style="light" />
@@ -126,14 +85,14 @@ export default function App() {
           <View style={styles.textContainer}>
             <Text style={styles.headerText}>Densitets kalkylator</Text>
           </View>
-          <DensityInputs calculateDensity={calculateDensity} />
+          <DensityInputs calculateDensity={run} />
         </View>
         <ModalView
           modalVisible={modalVisible}
           calculatedDensity={calculatedDensity}
+          acceptedDensity={acceptedDensity}
+          failedDensity={failedDensity}
           onCloseModal={CloseModal}
-          acceptedDensity
-          failedDensity
         />
       </View>
     </>

@@ -1,5 +1,5 @@
 import { StyleSheet, View, TextInput, Pressable, Text } from "react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SelectList } from "react-native-dropdown-select-list";
 
 function DensityInputs(props) {
@@ -8,7 +8,21 @@ function DensityInputs(props) {
   const [enterdBagAmount, setBagAmmount] = useState("");
   const [selectedInsulationType, setSelectedInsulationType] = useState("");
   const [selectedConstrutionType, setSelectedConstructionType] = useState("");
+  const [calculatedDensity, setCalculatedDensity] = useState(0);
+  const [shouldRunEffect, setShouldRunEffect] = useState(false);
 
+  const insulationtypes = [
+    { key: 14, value: "Cellulosa ekovilla 14 kg" },
+    { key: 15.5, value: "Glasull suprafil 15.5 kg" },
+    { key: 14, value: "Träull topcell 14 kg" },
+    { key: 12, value: "Träull topcell 12 kg" },
+  ];
+  const constructionTypes = [
+    { key: 1, value: "Vägg/Snedtak" },
+    { key: 2, value: "Vind" },
+    { key: 3, value: "BottenBjälklag" },
+    { key: 4, value: "MellanBjälklag" },
+  ];
   function addSquareMeter(enterdValue) {
     setSquareMeter(parseInt(enterdValue));
   }
@@ -23,28 +37,24 @@ function DensityInputs(props) {
       (Element) => Element.value == selectedInsulationType
     );
     const bagWeight = selectedInsulation.key;
-    props.calculateDensity(
-      enterdSquareMeter,
-      enterdDepth,
-      enterdBagAmount,
-      bagWeight,
-      selectedInsulationType,
-      selectedConstrutionType
-    );
+    var kubicMeterCalculation = enterdSquareMeter * (enterdDepth / 1000);
+    var weightInKilosCalculation = enterdBagAmount * bagWeight;
+    setCalculatedDensity(weightInKilosCalculation / kubicMeterCalculation);
+    setShouldRunEffect(true);
   };
 
-  const insulationtypes = [
-    { key: 14, value: "Cellulosa ekovilla 14 kg" },
-    { key: 15.5, value: "Glasull suprafil 15.5 kg" },
-    { key: 14, value: "Träull topcell 14 kg" },
-    { key: 12, value: "Träull topcell 12 kg" },
-  ];
-  const constructionTypes = [
-    { key: 1, value: "Vägg/Snedtak" },
-    { key: 2, value: "Vind" },
-    { key: 3, value: "BottenBjälklag" },
-    { key: 4, value: "MellanBjälklag" },
-  ];
+  useEffect(() => {
+    // This will run whenever calculatedDensity changes
+    if (shouldRunEffect) {
+      props.calculateDensity(
+        calculatedDensity,
+        selectedConstrutionType,
+        selectedInsulationType
+      );
+      setShouldRunEffect(false);
+    }
+  }, [calculatedDensity, shouldRunEffect]);
+
   function clearInput() {
     setSquareMeter("");
     setBagAmmount("");
@@ -58,7 +68,9 @@ function DensityInputs(props) {
         returnKeyType="done"
         placeholder="isolerad kvadratyta"
         placeholderTextColor={"#7A7A7A"}
-        value={enterdSquareMeter}
+        value={enterdSquareMeter === null ? '' : enterdSquareMeter.toString()}
+        textContentType="postalCode"
+        dataDetectorTypes={"phoneNumber"}
         onChangeText={addSquareMeter}
       />
       <TextInput
@@ -67,7 +79,8 @@ function DensityInputs(props) {
         returnKeyType="done"
         placeholder="Tjocklek(MILLIMETER)"
         placeholderTextColor={"#7A7A7A"}
-        value={enterdDepth}
+        value={enterdDepth === null ? '' : enterdDepth.toString()}
+        textContentType="postalCode"
         onChangeText={addDepth}
       />
       <TextInput
@@ -76,11 +89,12 @@ function DensityInputs(props) {
         returnKeyType="done"
         placeholder="Antal blåsta säckar"
         placeholderTextColor={"#7A7A7A"}
-        value={enterdBagAmount}
+        value={enterdBagAmount === null ? '' : enterdBagAmount.toString()}
+        textContentType="postalCode"
         onChangeText={addBagAmmount}
       />
 
-      <View styles={styles.selectListContainer}>
+      <View style={styles.selectListContainer}>
         <SelectList
           boxStyles={{ backgroundColor: "white" }}
           dropdownStyles={{
@@ -92,11 +106,14 @@ function DensityInputs(props) {
           }}
           dropdownTextStyles={{
             color: "white",
-            fontSize: 22,
-            paddingHorizontal: 75,
+            fontSize: 14,
             paddingBottom: 10,
           }}
-          inputStyles={{ fontSize: 22 }}
+          inputStyles={{ fontSize: 14 }}
+          dropdownItemStyles={{
+            borderBottomColor: "white",
+            borderBottomWidth: 0.3,
+          }}
           placeholder="Välj material"
           setSelected={(val) => setSelectedInsulationType(val)}
           data={insulationtypes}
@@ -113,15 +130,18 @@ function DensityInputs(props) {
           }}
           dropdownTextStyles={{
             color: "white",
-            fontSize: 22,
-            paddingHorizontal: 75,
+            fontSize: 17,
             paddingBottom: 10,
           }}
-          inputStyles={{ fontSize: 22 }}
+          inputStyles={{ fontSize: 14 }}
           placeholder="Välj konstruktion"
           setSelected={(val) => setSelectedConstructionType(val)}
           data={constructionTypes}
           save="value"
+          dropdownItemStyles={{
+            borderBottomColor: "white",
+            borderBottomWidth: 0.3,
+          }}
         />
       </View>
       <View style={styles.buttonContainer}>
@@ -186,7 +206,9 @@ const styles = StyleSheet.create({
     color: "#F7F7F7",
   },
   selectListContainer: {
-    width: "100%",
     flexDirection: "row",
+    justifyContent: "space-around",
+    width: "100%",
+    marginTop: 10,
   },
 });
