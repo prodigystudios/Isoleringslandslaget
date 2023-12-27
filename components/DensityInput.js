@@ -68,7 +68,7 @@ function DensityInputs(props) {
         returnKeyType="done"
         placeholder="isolerad kvadratyta"
         placeholderTextColor={"#7A7A7A"}
-        value={enterdSquareMeter === null ? '' : enterdSquareMeter.toString()}
+        value={enterdSquareMeter === null ? '' : enterdSquareMeter}
         textContentType="postalCode"
         dataDetectorTypes={"phoneNumber"}
         onChangeText={addSquareMeter}
@@ -79,7 +79,7 @@ function DensityInputs(props) {
         returnKeyType="done"
         placeholder="Tjocklek(MILLIMETER)"
         placeholderTextColor={"#7A7A7A"}
-        value={enterdDepth === null ? '' : enterdDepth.toString()}
+        value={enterdDepth === null ? '' : enterdDepth}
         textContentType="postalCode"
         onChangeText={addDepth}
       />
@@ -89,7 +89,7 @@ function DensityInputs(props) {
         returnKeyType="done"
         placeholder="Antal blåsta säckar"
         placeholderTextColor={"#7A7A7A"}
-        value={enterdBagAmount === null ? '' : enterdBagAmount.toString()}
+        value={enterdBagAmount === null ? '' : enterdBagAmount}
         textContentType="postalCode"
         onChangeText={addBagAmmount}
       />
