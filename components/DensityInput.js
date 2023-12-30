@@ -32,6 +32,7 @@ function DensityInputs(props) {
   function addBagAmmount(enterdValue) {
     setBagAmmount(parseInt(enterdValue));
   }
+  //Write error handler to stop app from crashing when no selected value from menu is used!
   const calculateDensityHandler = () => {
     const selectedInsulation = insulationtypes.find(
       (Element) => Element.value == selectedInsulationType

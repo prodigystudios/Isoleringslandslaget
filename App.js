@@ -76,19 +76,19 @@ function DensityCalculationScreen(navigation) {
     setFailedDensity(false);
   }
   function run(
-    calculatedDensityy,
+    calculatedDensity,
     selectedConstructionType,
     selectedInsulationType
   ) {
-    setCalculatedDensity(calculatedDensityy);
+    setCalculatedDensity(calculatedDensity);
     const selectedInsulationAndType = densityTypes.find(
       (element) =>
         element.name === selectedInsulationType &&
         element.value === selectedConstructionType
     );
     if (
-      calculatedDensityy >= selectedInsulationAndType.minValue &&
-      calculatedDensityy <= selectedInsulationAndType.maxValue
+      calculatedDensity >= selectedInsulationAndType.minValue &&
+      calculatedDensity <= selectedInsulationAndType.maxValue
     ) {
       setAcceptedDensity(true);
       OpenModal();
