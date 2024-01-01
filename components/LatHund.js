@@ -7,9 +7,6 @@ import {
   Dimensions,
   SectionList,
   Pressable,
-  Modal,
-  ScrollView,
-  Button,
 } from "react-native";
 
 const data = [
@@ -37,29 +34,23 @@ const data = [
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
-function LatHund() {
+function LatHund({navigation}) {
   const [selectedImage, setSelectedImage] = useState("");
-  const [modalVisible, setModalVisible] = useState(false);
 
-  function OpenModal(key) {
+  function OpenImage(key) {
     const selectedImage = data
       .flatMap((section) => section.data)
       .find((item) => item.key === key);
     setSelectedImage(selectedImage.source);
-    setModalVisible(true);
+    navigation.navigate('ImageDetailScreen', {selectedImage: selectedImage.source})
   }
-  function closeModal() {
-    setSelectedImage('');
-    setModalVisible(false);
-  }
-
   return (
     <>
       <SectionList
         sections={data}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
-          <Pressable onPress={() => OpenModal(item.key)}>
+          <Pressable onPress={() => OpenImage(item.key)}>
             <View style={styles.imageContainer}>
               <Text>{item.title}</Text>
               <Image style={styles.imageSmall} source={item.source} />
@@ -67,19 +58,12 @@ function LatHund() {
           </Pressable>
         )}
       />
-      <ScrollView>
-        <Modal visible={modalVisible}>
-          <View style={styles.imageContainer}>
-            <Button onPress={closeModal} title="Stäng" />
-            <Image style={styles.imageBig} source={selectedImage} />
-          </View>
-        </Modal>
-      </ScrollView>
     </>
   );
 }
 
 export default LatHund;
+
 const styles = StyleSheet.create({
   imageContainer: {
     marginTop: 50,
@@ -91,10 +75,5 @@ const styles = StyleSheet.create({
     width: windowWidth * 0.5,
     height: windowHeight * 0.3,
     resizeMode: "cover",
-  },
-  imageBig: {
-    width: windowWidth * 1.1,
-    height: windowHeight * 1,
-    resizeMode: "stretch",
   },
 });

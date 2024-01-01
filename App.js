@@ -4,10 +4,12 @@ import { StyleSheet, Text, View, Image, Pressable } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Platform } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 import ModalView from "./components/ModalView";
 import DensityInputs from "./components/DensityInput";
 import LatHund from "./components/LatHund";
+import ImageDetailScreen from "./components/ImageDetailScreen";
 const densityTypes = [
   {
     index: 1,
@@ -70,7 +72,7 @@ function HomeScreen({ navigation }) {
 }
 
 function LatHundScreen({ navigation }) {
-  return <LatHund />;
+  return <LatHund navigation={navigation}/>;
 }
 
 function DensityCalculationScreen(navigation) {
@@ -164,9 +166,10 @@ export default function App() {
         />
         <stack.Screen
           name="Lathund"
-          component={LatHund}
+          component={LatHundScreen}
           options={{ title: "Lathund" }}
         />
+        <stack.Screen name="ImageDetailScreen" component={ImageDetailScreen}options={{title:'Bild'}}/>
       </stack.Navigator>
     </NavigationContainer>
   );
