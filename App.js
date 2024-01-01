@@ -2,12 +2,12 @@ import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
 import { StyleSheet, Text, View, Image, Pressable } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator} from "@react-navigation/native-stack";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Platform } from "react-native";
 
 import ModalView from "./components/ModalView";
 import DensityInputs from "./components/DensityInput";
-
+import LatHund from "./components/LatHund";
 const densityTypes = [
   {
     index: 1,
@@ -44,10 +44,12 @@ function HomeScreen({ navigation }) {
     <>
       <StatusBar style="light" />
       <View style={styles.MainAppSettings}>
-        <Image
-          style={styles.headerImage}
-          source={require("./assets/iso.jpg")}
-        />
+        <View style={styles.headerImageContainer}>
+          <Image
+            style={styles.headerImage}
+            source={require("./assets/IsoleringsLandslaget.png")}
+          />
+        </View>
         <View style={styles.MainAppContainer}>
           <Pressable
             style={styles.MainMenuPressableContainer}
@@ -55,10 +57,20 @@ function HomeScreen({ navigation }) {
           >
             <Text style={styles.MainMenuButtonsText}>Densitets kalkylator</Text>
           </Pressable>
+          <Pressable
+            style={styles.MainMenuPressableContainer}
+            onPress={() => navigation.navigate("Lathund")}
+          >
+            <Text style={styles.MainMenuButtonsText}>Lathund</Text>
+          </Pressable>
         </View>
       </View>
     </>
   );
+}
+
+function LatHundScreen({ navigation }) {
+  return <LatHund />;
 }
 
 function DensityCalculationScreen(navigation) {
@@ -136,12 +148,12 @@ export default function App() {
           },
           headerTitleStyle: {
             color: "white",
-            alignSelf:"center"
+            alignSelf: "center",
           },
           headerBackTitleStyle: {
-            fontSize:20
+            fontSize: 20,
           },
-          headerTintColor:"white",
+          headerTintColor: "white",
         }}
       >
         <stack.Screen name="Home" component={HomeScreen} />
@@ -150,6 +162,11 @@ export default function App() {
           component={DensityCalculationScreen}
           options={{ title: "Densitets kalkylator" }}
         />
+        <stack.Screen
+          name="Lathund"
+          component={LatHund}
+          options={{ title: "Lathund" }}
+        />
       </stack.Navigator>
     </NavigationContainer>
   );
@@ -157,7 +174,7 @@ export default function App() {
 
 const styles = StyleSheet.create({
   MainAppSettings: {
-    backgroundColor: "#0B2B96",
+    backgroundColor: "#bfc1c9",
     height: "100%",
   },
   MainAppContainer: {
@@ -165,9 +182,17 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingBottom: 200,
   },
+  headerImageContainer: {
+    marginTop: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    overflow: "visible",
+    elevation: Platform.OS === "android" ? 5 : 0, // Add elevation for Android
+  },
   headerImage: {
-    width: "100%",
-    height: 100,
+    height: 150,
+    width: 150,
+    resizeMode: "contain",
   },
   MainMenuPressableContainer: {
     alignItems: "center",
