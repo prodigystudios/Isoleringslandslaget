@@ -39,6 +39,34 @@ const densityTypes = [
     minValue: 38,
     maxValue: 42,
   },
+  {
+    index: 5,
+    name: "Glasull suprafil 15.5 kg",
+    value: "Vind",
+    minValue: 11,
+    maxValue: 13,
+  },
+  {
+    index: 6,
+    name: "Glasull suprafil 15.5 kg",
+    value: "Vägg/Snedtak",
+    minValue: 18,
+    maxValue: 23,
+  },
+  {
+    index: 7,
+    name: "Glasull suprafil 15.5 kg",
+    value: "MellanBjälklag",
+    minValue: 16,
+    maxValue: 18,
+  },
+  {
+    index: 8,
+    name: "Glasull suprafil 15.5 kg",
+    value: "BottenBjälklag",
+    minValue: 17,
+    maxValue: 20,
+  },
 ];
 
 function HomeScreen({ navigation }) {
@@ -193,7 +221,7 @@ const styles = StyleSheet.create({
     marginTop: 50,
     justifyContent: "center",
     alignItems: "center",
-    alignContent:"center",
+    alignContent: "center",
     overflow: "visible",
     elevation: Platform.OS === "android" ? 5 : 0, // Add elevation for Android
   },

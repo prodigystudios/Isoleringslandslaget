@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Image,
   Text,
@@ -15,17 +14,17 @@ const data = [
       {
         key: "1",
         title: "lathund densiteter",
-        source: require("../assets/lathundIsolering.png"),
+        source: require("../assets/Lathund/lathundIsolering.png"),
       },
       {
         key: "2",
-        title: "Mall densitets beräknin",
-        source: require("../assets/mall-densitet-och-ytvikt.png"),
+        title: "Mall densitets beräkning",
+        source: require("../assets/Lathund/mall-densitet-och-ytvikt.png"),
       },
       {
         key: "3",
         title: "Tid rapportering",
-        source: require("../assets/tidrapport.png"),
+        source: require("../assets/Lathund/tidrapport.png"),
       },
     ],
   },
@@ -35,26 +34,27 @@ const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
 function LatHund({ navigation }) {
-  const [selectedImage, setSelectedImage] = useState("");
-
   function OpenImage(key) {
     const selectedImage = data
       .flatMap((section) => section.data)
       .find((item) => item.key === key);
-    setSelectedImage(selectedImage.source);
     navigation.navigate("ImageDetailScreen", {
       selectedImage: selectedImage.source,
     });
   }
   return (
     <>
+      <Text style={styles.headerText}>
+        Klicka på bilderna för att öppna dom i helskärm
+      </Text>
+
       <SectionList
         sections={data}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
           <Pressable onPress={() => OpenImage(item.key)}>
             <View style={styles.imageContainer}>
-              <Text>{item.title}</Text>
+              <Text style={styles.headerText}>{item.title}</Text>
               <Image style={styles.imageSmall} source={item.source} />
             </View>
           </Pressable>
@@ -67,8 +67,14 @@ function LatHund({ navigation }) {
 export default LatHund;
 
 const styles = StyleSheet.create({
+  headerText: {
+    marginTop: 20,
+    marginBottom: 10,
+    alignSelf: "center",
+    fontSize: 18,
+  },
   imageContainer: {
-    marginTop: 50,
+    marginTop: 10,
     justifyContent: "center",
     alignContent: "center",
     alignItems: "center",

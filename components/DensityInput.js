@@ -3,9 +3,9 @@ import { useEffect, useState } from "react";
 import { SelectList } from "react-native-dropdown-select-list";
 
 function DensityInputs(props) {
-  const [enterdSquareMeter, setSquareMeter] = useState("");
-  const [enterdDepth, setDepth] = useState("");
-  const [enterdBagAmount, setBagAmmount] = useState("");
+  const [enterdSquareMeter, setSquareMeter] = useState(0);
+  const [enterdDepth, setDepth] = useState(0);
+  const [enterdBagAmount, setBagAmmount] = useState(0);
   const [selectedInsulationType, setSelectedInsulationType] = useState("");
   const [selectedConstrutionType, setSelectedConstructionType] = useState("");
   const [calculatedDensity, setCalculatedDensity] = useState(0);
@@ -37,6 +37,10 @@ function DensityInputs(props) {
     const selectedInsulation = insulationtypes.find(
       (Element) => Element.value == selectedInsulationType
     );
+    if (selectedInsulation == undefined) return alert("Välj ett material");
+    if (selectedConstrutionType == String.length <= 0)
+     return alert("Välj en konstruktion");
+
     const bagWeight = selectedInsulation.key;
     var kubicMeterCalculation = enterdSquareMeter * (enterdDepth / 1000);
     var weightInKilosCalculation = enterdBagAmount * bagWeight;
@@ -208,7 +212,7 @@ const styles = StyleSheet.create({
   },
   selectListContainer: {
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "space-evenly",
     width: "100%",
     marginTop: 10,
   },
