@@ -34,7 +34,7 @@ const data = [
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
-function LatHund({navigation}) {
+function LatHund({ navigation }) {
   const [selectedImage, setSelectedImage] = useState("");
 
   function OpenImage(key) {
@@ -42,7 +42,9 @@ function LatHund({navigation}) {
       .flatMap((section) => section.data)
       .find((item) => item.key === key);
     setSelectedImage(selectedImage.source);
-    navigation.navigate('ImageDetailScreen', {selectedImage: selectedImage.source})
+    navigation.navigate("ImageDetailScreen", {
+      selectedImage: selectedImage.source,
+    });
   }
   return (
     <>

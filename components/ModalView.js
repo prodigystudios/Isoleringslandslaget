@@ -60,8 +60,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   densityText: {
-    color:"white",
-    fontSize:19,
+    color: "white",
+    fontSize: 19,
   },
   modalViewText: {
     marginBottom: 30,

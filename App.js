@@ -72,7 +72,7 @@ function HomeScreen({ navigation }) {
 }
 
 function LatHundScreen({ navigation }) {
-  return <LatHund navigation={navigation}/>;
+  return <LatHund navigation={navigation} />;
 }
 
 function DensityCalculationScreen(navigation) {
@@ -116,10 +116,10 @@ function DensityCalculationScreen(navigation) {
     <>
       <StatusBar style="light" />
       <View style={styles.MainAppSettings}>
-        <View>
+        <View style={styles.headerImageContainer}>
           <Image
             style={styles.headerImage}
-            source={require("./assets/iso.jpg")}
+            source={require("./assets/IsoleringsLandslaget.png")}
           />
         </View>
         <View>
@@ -169,7 +169,11 @@ export default function App() {
           component={LatHundScreen}
           options={{ title: "Lathund" }}
         />
-        <stack.Screen name="ImageDetailScreen" component={ImageDetailScreen}options={{title:'Bild'}}/>
+        <stack.Screen
+          name="ImageDetailScreen"
+          component={ImageDetailScreen}
+          options={{ title: "Bild" }}
+        />
       </stack.Navigator>
     </NavigationContainer>
   );
@@ -189,6 +193,7 @@ const styles = StyleSheet.create({
     marginTop: 50,
     justifyContent: "center",
     alignItems: "center",
+    alignContent:"center",
     overflow: "visible",
     elevation: Platform.OS === "android" ? 5 : 0, // Add elevation for Android
   },
