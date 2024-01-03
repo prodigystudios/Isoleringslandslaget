@@ -37,9 +37,11 @@ function DensityInputs(props) {
     const selectedInsulation = insulationtypes.find(
       (Element) => Element.value == selectedInsulationType
     );
-    if (selectedInsulation == undefined) return alert("Välj ett material");
-    if (selectedConstrutionType == String.length <= 0)
-      return alert("Välj en konstruktion");
+    if (enterdSquareMeter <= 0) return alert("Du måste ange kvadratmeter");
+    if (enterdDepth <= 0) return alert("Du måste ange tjocklek");
+    if (enterdBagAmount <= 0) return alert("Du måste ange antal blåsta säckar");
+    if (!selectedInsulation) return alert("Välj ett material");
+    if (!selectedConstrutionType) return alert("Välj en konstruktion");
 
     const bagWeight = selectedInsulation.key;
     var kubicMeterCalculation = enterdSquareMeter * (enterdDepth / 1000);

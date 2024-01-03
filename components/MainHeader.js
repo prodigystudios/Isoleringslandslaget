@@ -1,4 +1,4 @@
-import { View, Image, StyleSheet } from "react-native";
+import { Image, StyleSheet } from "react-native";
 
 function MainHeader() {
   return (
