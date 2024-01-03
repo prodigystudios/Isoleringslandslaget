@@ -43,11 +43,10 @@ function LatHund({ navigation }) {
     });
   }
   return (
-    <>
+    <View>
       <Text style={styles.headerText}>
         Klicka på bilderna för att öppna dom i helskärm
       </Text>
-
       <SectionList
         sections={data}
         keyExtractor={(item, index) => index.toString()}
@@ -60,7 +59,7 @@ function LatHund({ navigation }) {
           </Pressable>
         )}
       />
-    </>
+    </View>
   );
 }
 

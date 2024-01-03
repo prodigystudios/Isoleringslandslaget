@@ -1,7 +1,11 @@
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
-import { StyleSheet, Text, View, Image, Pressable } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
+import { StyleSheet, Text, View, Pressable } from "react-native";
+import {
+  NavigationContainer,
+  DefaultTheme,
+  useTheme,
+} from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Platform } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -10,6 +14,7 @@ import ModalView from "./components/ModalView";
 import DensityInputs from "./components/DensityInput";
 import LatHund from "./components/LatHund";
 import ImageDetailScreen from "./components/ImageDetailScreen";
+import MainHeader from "./components/MainHeader";
 const densityTypes = [
   {
     index: 1,
@@ -69,18 +74,20 @@ const densityTypes = [
   },
 ];
 
+const theme = {
+  ...DefaultTheme,
+  colors: { ...DefaultTheme.colors, background: "#bfc1c9" },
+};
+
 function HomeScreen({ navigation }) {
   return (
     <>
       <StatusBar style="light" />
-      <View style={styles.MainAppSettings}>
+      <View>
         <View style={styles.headerImageContainer}>
-          <Image
-            style={styles.headerImage}
-            source={require("./assets/IsoleringsLandslaget.png")}
-          />
+          <MainHeader />
         </View>
-        <View style={styles.MainAppContainer}>
+        <View style={styles.mainMenuContainer}>
           <Pressable
             style={styles.MainMenuPressableContainer}
             onPress={() => navigation.navigate("Density calculator")}
@@ -100,7 +107,12 @@ function HomeScreen({ navigation }) {
 }
 
 function LatHundScreen({ navigation }) {
-  return <LatHund navigation={navigation} />;
+  return (
+    <View style={styles.wrappableContainer}>
+      <MainHeader />
+      <LatHund navigation={navigation} />
+    </View>
+  );
 }
 
 function DensityCalculationScreen(navigation) {
@@ -143,12 +155,9 @@ function DensityCalculationScreen(navigation) {
   return (
     <>
       <StatusBar style="light" />
-      <View style={styles.MainAppSettings}>
+      <View>
         <View style={styles.headerImageContainer}>
-          <Image
-            style={styles.headerImage}
-            source={require("./assets/IsoleringsLandslaget.png")}
-          />
+          <MainHeader />
         </View>
         <View>
           <DensityInputs calculateDensity={run} />
@@ -169,7 +178,7 @@ const stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <NavigationContainer style={{ backgroundColor: "#0B2B96" }}>
+    <NavigationContainer theme={theme}>
       <stack.Navigator
         initialRouteName="Home"
         screenOptions={{
@@ -208,14 +217,14 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-  MainAppSettings: {
-    backgroundColor: "#bfc1c9",
-    height: "100%",
+  wrappableContainer: {
+    flex: 2,
+    paddingBottom: 300,
   },
-  MainAppContainer: {
-    height: "100%",
+  mainMenuContainer: {
+    marginVertical: 100,
     justifyContent: "center",
-    paddingBottom: 200,
+    alignContent: "center",
   },
   headerImageContainer: {
     marginTop: 50,

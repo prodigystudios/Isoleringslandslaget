@@ -39,7 +39,7 @@ function DensityInputs(props) {
     );
     if (selectedInsulation == undefined) return alert("Välj ett material");
     if (selectedConstrutionType == String.length <= 0)
-     return alert("Välj en konstruktion");
+      return alert("Välj en konstruktion");
 
     const bagWeight = selectedInsulation.key;
     var kubicMeterCalculation = enterdSquareMeter * (enterdDepth / 1000);
