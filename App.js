@@ -1,6 +1,13 @@
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
-import { StyleSheet, Text, View, Pressable } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Pressable,
+  Linking,
+  TouchableOpacity,
+} from "react-native";
 import {
   NavigationContainer,
   DefaultTheme,
@@ -100,6 +107,12 @@ function HomeScreen({ navigation }) {
           >
             <Text style={styles.MainMenuButtonsText}>Lathund</Text>
           </Pressable>
+          <Pressable
+            style={styles.MainMenuPressableContainer}
+            onPress={LoadControll}
+          >
+            <Text style={styles.MainMenuButtonsText}>Egenkontroll</Text>
+          </Pressable>
         </View>
       </View>
     </>
@@ -173,6 +186,20 @@ function DensityCalculationScreen(navigation) {
     </>
   );
 }
+const LoadControll = () => {
+  const url = "https://eu.jotform.com/app/232263104050338/211592860500046";
+
+  // Open the link
+  Linking.openURL(url)
+    .then((supported) => {
+      if (!supported) {
+        console.log(`Can't handle url: ${url}`);
+      } else {
+        return Linking.openURL(url);
+      }
+    })
+    .catch((err) => console.error("An error occurred", err));
+};
 
 const stack = createNativeStackNavigator();
 
