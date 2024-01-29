@@ -1,4 +1,5 @@
 import { StyleSheet, View, TextInput, Pressable, Text } from "react-native";
+import { Signal, signal } from "@preact/signals-react";
 import { useEffect, useState } from "react";
 import { SelectList } from "react-native-dropdown-select-list";
 
@@ -10,7 +11,6 @@ function DensityInputs(props) {
   const [selectedConstrutionType, setSelectedConstructionType] = useState("");
   const [calculatedDensity, setCalculatedDensity] = useState(0);
   const [shouldRunEffect, setShouldRunEffect] = useState(false);
-
   const insulationtypes = [
     { key: 14, value: "Cellulosa ekovilla 14 kg" },
     { key: 15.5, value: "Glasull suprafil 15.5 kg" },
@@ -32,7 +32,6 @@ function DensityInputs(props) {
   function addBagAmmount(enterdValue) {
     setBagAmmount(parseInt(enterdValue));
   }
-  //Write error handler to stop app from crashing when no selected value from menu is used!
   const calculateDensityHandler = () => {
     const selectedInsulation = insulationtypes.find(
       (Element) => Element.value == selectedInsulationType

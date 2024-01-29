@@ -7,9 +7,9 @@ function ModalView(props) {
           <Text style={styles.modalViewText}>
             Din densitet är: {props.calculatedDensity} Kg/m3
           </Text>
-          <Text style={styles.acceptedDenisty}>Godkänd densitet</Text>
-          <Text style={styles.modalViewText}>
-            Du håller dig inom dom godkända parametrarna för isolering!
+          <Text style={styles.acceptedDenisty}>
+            Du ligger rätt i densitet för {props.selectedConstructionType}s
+            installation
           </Text>
           <Button title="Stäng" onPress={props.onCloseModal}></Button>
         </View>
@@ -19,11 +19,14 @@ function ModalView(props) {
   if (props.failedDensity) {
     return (
       <Modal animationType="fade" visible={props.modalVisible}>
-        <View style={styles.modalViewNotAcceptedContainer}>
+        <View style={styles.modalView}>
           <Text style={styles.densityText}>
             Din densitet är: {props.calculatedDensity} Kg/m3
           </Text>
-          <Text style={styles.notAcceptedDenisty}>För låg/hög densitet</Text>
+          <Text style={styles.notAcceptedDenisty}>
+            För {props.densityText} densitet för{" "}
+            {props.selectedConstructionType}s isolering
+          </Text>
           <Text style={styles.modalViewText}>
             Se över dina inställningar på maskinen, säkerställ kvaliten på
             materialet o försök igen!
@@ -77,11 +80,5 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     color: "red",
     fontSize: 40,
-  },
-  modalViewNotAcceptedContainer: {
-    backgroundColor: "#0B2B96",
-    height: "100%",
-    paddingHorizontal: 20,
-    paddingTop: 100,
   },
 });

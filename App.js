@@ -6,22 +6,21 @@ import {
   View,
   Pressable,
   Linking,
-  TouchableOpacity,
 } from "react-native";
 import {
   NavigationContainer,
   DefaultTheme,
-  useTheme,
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Platform } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-
 import ModalView from "./components/ModalView";
 import DensityInputs from "./components/DensityInput";
 import LatHund from "./components/LatHund";
 import ImageDetailScreen from "./components/ImageDetailScreen";
 import MainHeader from "./components/MainHeader";
+
+
+const stack = createNativeStackNavigator();
 const densityTypes = [
   {
     index: 1,
@@ -129,10 +128,12 @@ function LatHundScreen({ navigation }) {
 }
 
 function DensityCalculationScreen(navigation) {
+  const [highOrLowDensityText, setHighorLowDensityText] = useState("");
   const [calculatedDensity, setCalculatedDensity] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
   const [acceptedDensity, setAcceptedDensity] = useState(false);
   const [failedDensity, setFailedDensity] = useState(false);
+  const [selectedConstrutionType, setSelectedConstructionType] = useState("");
 
   function OpenModal() {
     setModalVisible(true);
@@ -148,6 +149,7 @@ function DensityCalculationScreen(navigation) {
     selectedInsulationType
   ) {
     setCalculatedDensity(calculatedDensity);
+    setSelectedConstructionType(selectedConstructionType);
     const selectedInsulationAndType = densityTypes.find(
       (element) =>
         element.name === selectedInsulationType &&
@@ -160,6 +162,9 @@ function DensityCalculationScreen(navigation) {
       setAcceptedDensity(true);
       OpenModal();
     } else {
+      if (calculatedDensity < selectedInsulationAndType.minValue) {
+        setHighorLowDensityText("låg");
+      } else setHighorLowDensityText("Hög");
       setFailedDensity(true);
       OpenModal();
     }
@@ -180,6 +185,8 @@ function DensityCalculationScreen(navigation) {
           calculatedDensity={calculatedDensity}
           acceptedDensity={acceptedDensity}
           failedDensity={failedDensity}
+          densityText={highOrLowDensityText}
+          selectedConstructionType={selectedConstrutionType}
           onCloseModal={CloseModal}
         />
       </View>
@@ -200,8 +207,6 @@ const LoadControll = () => {
     })
     .catch((err) => console.error("An error occurred", err));
 };
-
-const stack = createNativeStackNavigator();
 
 export default function App() {
   return (
