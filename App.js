@@ -1,26 +1,19 @@
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Pressable,
-  Linking,
-} from "react-native";
-import {
-  NavigationContainer,
-  DefaultTheme,
-} from "@react-navigation/native";
+import { StyleSheet, Text, View, Pressable, Linking } from "react-native";
+import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Platform } from "react-native";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 import ModalView from "./components/ModalView";
 import DensityInputs from "./components/DensityInput";
 import LatHund from "./components/LatHund";
 import ImageDetailScreen from "./components/ImageDetailScreen";
 import MainHeader from "./components/MainHeader";
-
+import { Ionicons } from "@expo/vector-icons";
 
 const stack = createNativeStackNavigator();
+const Drawer = createDrawerNavigator();
 const densityTypes = [
   {
     index: 1,
@@ -211,39 +204,61 @@ const LoadControll = () => {
 export default function App() {
   return (
     <NavigationContainer theme={theme}>
-      <stack.Navigator
+      <Drawer.Navigator
         initialRouteName="Home"
         screenOptions={{
-          headerStyle: {
-            backgroundColor: "#0B2B96",
-          },
-          headerTitleStyle: {
-            color: "white",
-            alignSelf: "center",
-          },
-          headerBackTitleStyle: {
-            fontSize: 20,
-          },
+          drawerLabelStyle: { fontSize: 22 },
+          drawerActiveTintColor: "#5f98b0",
+          headerStyle: { backgroundColor: "#0B2B96" },
+          headerTitleStyle: { color: "white", alignSelf: "center" },
           headerTintColor: "white",
         }}
       >
-        <stack.Screen name="Home" component={HomeScreen} />
-        <stack.Screen
-          name="Density calculator"
+        <Drawer.Screen
+          options={{
+            drawerIcon: ({ focused, size }) => (
+              <Ionicons
+                name="md-home"
+                size={size}
+                color={focused ? "#5f98b0" : "ccc"}
+              />
+            ),
+          }}
+          name="Hem"
+          component={HomeScreen}
+        />
+        <Drawer.Screen
+          options={{
+            drawerIcon: ({ focused, size }) => (
+              <Ionicons
+                name="calculator-sharp"
+                size={size}
+                color={focused ? "ccc" : "#5f98b0"}
+              />
+            ),
+          }}
+          name="Kalkylator"
           component={DensityCalculationScreen}
-          options={{ title: "Densitets kalkylator" }}
         />
-        <stack.Screen
-          name="Lathund"
-          component={LatHundScreen}
-          options={{ title: "Lathund" }}
-        />
-        <stack.Screen
-          name="ImageDetailScreen"
-          component={ImageDetailScreen}
-          options={{ title: "Bild" }}
-        />
-      </stack.Navigator>
+        <Drawer.Screen options={{
+            drawerIcon: ({ focused, size }) => (
+              <Ionicons
+                name="documents-sharp"
+                size={size}
+                color={focused ? "ccc" : "#5f98b0"}
+              />
+            ),
+          }} name="Lathund" component={LatHundScreen} />
+        <Drawer.Screen options={{
+            drawerIcon: ({ focused, size }) => (
+              <Ionicons
+                name="md-document-sharp"
+                size={size}
+                color={focused ? "ccc" : "#5f98b0"}
+              />
+            ),
+          }} name="EgenKontroll" component={LoadControll} />
+      </Drawer.Navigator>
     </NavigationContainer>
   );
 }
