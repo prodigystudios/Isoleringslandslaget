@@ -17,7 +17,8 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.w.ali.isoleringslandslagetapp"
+      "bundleIdentifier": "com.w.ali.isoleringslandslagetapp",
+      "infoPlist":{"LSApplicationQueriesSchemes": ["tel"]}
     },
     "android": {
       "adaptiveIcon": {
