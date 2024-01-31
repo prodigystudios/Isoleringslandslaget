@@ -4,16 +4,18 @@ import { StyleSheet, Text, View, Pressable, Linking } from "react-native";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Platform } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import ModalView from "./components/ModalView";
 import DensityInputs from "./components/DensityInput";
 import LatHund from "./components/LatHund";
 import ImageDetailScreen from "./components/ImageDetailScreen";
 import MainHeader from "./components/MainHeader";
-import { Ionicons } from "@expo/vector-icons";
+import News from "./components/News";
+import ContactPage from "./components/ContactPage";
 
-const stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
+const stack = createNativeStackNavigator();
 const densityTypes = [
   {
     index: 1,
@@ -78,34 +80,93 @@ const theme = {
   colors: { ...DefaultTheme.colors, background: "#bfc1c9" },
 };
 
+function Root() {
+  return(
+    <Drawer.Navigator
+        initialRouteName="Home"
+        screenOptions={{
+          drawerLabelStyle: { fontSize: 22 },
+          drawerActiveTintColor: "#5f98b0",
+          headerStyle: { backgroundColor: "#0B2B96" },
+          headerTitleStyle: { color: "white", alignSelf: "center" },
+          headerTintColor: "white",
+        }}
+      >
+        <Drawer.Screen
+          options={{
+            drawerIcon: ({ focused, size }) => (
+              <Ionicons
+                name="md-home"
+                size={size}
+                color={focused ? "#5f98b0" : "ccc"}
+              />
+            ),
+          }}
+          name="Nyheter"
+          component={HomeScreen}
+        />
+        <Drawer.Screen
+          options={{
+            drawerIcon: ({ focused, size }) => (
+              <Ionicons
+                name="calculator-sharp"
+                size={size}
+                color={focused ? "ccc" : "#5f98b0"}
+              />
+            ),
+          }}
+          name="Kalkylator"
+          component={DensityCalculationScreen}
+        />
+        <Drawer.Screen
+          options={{
+            drawerIcon: ({ focused, size }) => (
+              <Ionicons
+                name="documents-sharp"
+                size={size}
+                color={focused ? "ccc" : "#5f98b0"}
+              />
+            ),
+          }}
+          name="Lathund"
+          component={LatHundScreen}
+        />
+        <Drawer.Screen
+          options={{
+            drawerIcon: ({ focused, size }) => (
+              <Ionicons
+                name="md-document-sharp"
+                size={size}
+                color={focused ? "ccc" : "#5f98b0"}
+              />
+            ),
+          }}
+          name="EgenKontroll"
+          component={LoadControll}
+        />
+        <Drawer.Screen
+          options={{
+            drawerIcon: ({ focused, size }) => (
+              <Ionicons
+                name="person"
+                size={size}
+                color={focused ? "ccc" : "#5f98b0"}
+              />
+            ),
+          }}
+          name="Medarbetare"
+          component={ContactScreen}
+        />
+      </Drawer.Navigator>
+  )
+}
+
 function HomeScreen({ navigation }) {
   return (
     <>
       <StatusBar style="light" />
       <View>
-        <View style={styles.headerImageContainer}>
-          <MainHeader />
-        </View>
-        <View style={styles.mainMenuContainer}>
-          <Pressable
-            style={styles.MainMenuPressableContainer}
-            onPress={() => navigation.navigate("Density calculator")}
-          >
-            <Text style={styles.MainMenuButtonsText}>Densitets kalkylator</Text>
-          </Pressable>
-          <Pressable
-            style={styles.MainMenuPressableContainer}
-            onPress={() => navigation.navigate("Lathund")}
-          >
-            <Text style={styles.MainMenuButtonsText}>Lathund</Text>
-          </Pressable>
-          <Pressable
-            style={styles.MainMenuPressableContainer}
-            onPress={LoadControll}
-          >
-            <Text style={styles.MainMenuButtonsText}>Egenkontroll</Text>
-          </Pressable>
-        </View>
+        <News />
       </View>
     </>
   );
@@ -113,10 +174,10 @@ function HomeScreen({ navigation }) {
 
 function LatHundScreen({ navigation }) {
   return (
-    <View style={styles.wrappableContainer}>
-      <MainHeader />
-      <LatHund navigation={navigation} />
-    </View>
+      <View style={styles.wrappableContainer}>
+        <MainHeader />
+        <LatHund navigation={navigation} />
+      </View>
   );
 }
 
@@ -186,6 +247,13 @@ function DensityCalculationScreen(navigation) {
     </>
   );
 }
+function ContactScreen() {
+  return (
+    <View>
+      <ContactPage />
+    </View>
+  );
+}
 const LoadControll = () => {
   const url = "https://eu.jotform.com/app/232263104050338/211592860500046";
 
@@ -204,66 +272,39 @@ const LoadControll = () => {
 export default function App() {
   return (
     <NavigationContainer theme={theme}>
-      <Drawer.Navigator
-        initialRouteName="Home"
+      <stack.Navigator initialRouteName="Home"
         screenOptions={{
-          drawerLabelStyle: { fontSize: 22 },
-          drawerActiveTintColor: "#5f98b0",
-          headerStyle: { backgroundColor: "#0B2B96" },
-          headerTitleStyle: { color: "white", alignSelf: "center" },
+          headerStyle: {
+            backgroundColor: "#0B2B96",
+          },
+          headerTitleStyle: {
+            color: "white",
+            alignSelf: "center",
+          },
+          headerBackTitleStyle: {
+            fontSize: 20,
+          },
           headerTintColor: "white",
         }}
       >
-        <Drawer.Screen
-          options={{
-            drawerIcon: ({ focused, size }) => (
-              <Ionicons
-                name="md-home"
-                size={size}
-                color={focused ? "#5f98b0" : "ccc"}
-              />
-            ),
-          }}
-          name="Hem"
-          component={HomeScreen}
+        <stack.Screen name="Isoleringslandslaget"component={Root} options={{headerShown: false}}/>
+        <stack.Screen
+          name="ImageDetailScreen"
+          component={ImageDetailScreen}
+          options={{ title: "Bild" }}
         />
-        <Drawer.Screen
-          options={{
-            drawerIcon: ({ focused, size }) => (
-              <Ionicons
-                name="calculator-sharp"
-                size={size}
-                color={focused ? "ccc" : "#5f98b0"}
-              />
-            ),
-          }}
-          name="Kalkylator"
-          component={DensityCalculationScreen}
-        />
-        <Drawer.Screen options={{
-            drawerIcon: ({ focused, size }) => (
-              <Ionicons
-                name="documents-sharp"
-                size={size}
-                color={focused ? "ccc" : "#5f98b0"}
-              />
-            ),
-          }} name="Lathund" component={LatHundScreen} />
-        <Drawer.Screen options={{
-            drawerIcon: ({ focused, size }) => (
-              <Ionicons
-                name="md-document-sharp"
-                size={size}
-                color={focused ? "ccc" : "#5f98b0"}
-              />
-            ),
-          }} name="EgenKontroll" component={LoadControll} />
-      </Drawer.Navigator>
+        </stack.Navigator>   
     </NavigationContainer>
   );
 }
 
 const styles = StyleSheet.create({
+  newsContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignContent: "center",
+  },
+
   wrappableContainer: {
     flex: 2,
     paddingBottom: 300,
