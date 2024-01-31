@@ -73,6 +73,62 @@ const densityTypes = [
     minValue: 17,
     maxValue: 20,
   },
+  {
+    index: 9,
+    name: "Träull topcell 14 kg",
+    value: "Vägg/Snedtak",
+    minValue: 54,
+    maxValue: 62,
+  },
+  {
+    index: 10,
+    name: "Träull topcell 14 kg",
+    value: "Vind",
+    minValue: 32,
+    maxValue: 36,
+  },
+  {
+    index: 11,
+    name: "Träull topcell 14 kg",
+    value: "BottenBjälklag",
+    minValue: 54,
+    maxValue: 57,
+  },
+  {
+    index: 12,
+    name: "Träull topcell 12 kg",
+    value: "MellanBjälklag",
+    minValue: 34,
+    maxValue: 37,
+  },
+  {
+    index: 9,
+    name: "Träull topcell 12 kg",
+    value: "Vägg/Snedtak",
+    minValue: 54,
+    maxValue: 62,
+  },
+  {
+    index: 10,
+    name: "Träull topcell 12 kg",
+    value: "Vind",
+    minValue: 32,
+    maxValue: 36,
+  },
+  {
+    index: 11,
+    name: "Träull topcell 12 kg",
+    value: "BottenBjälklag",
+    minValue: 54,
+    maxValue: 57,
+  },
+  {
+    index: 12,
+    name: "Träull topcell 12 kg",
+    value: "MellanBjälklag",
+    minValue: 34,
+    maxValue: 37,
+  },
 ];
 
 const theme = {
@@ -81,84 +137,84 @@ const theme = {
 };
 
 function Root() {
-  return(
+  return (
     <Drawer.Navigator
-        initialRouteName="Home"
-        screenOptions={{
-          drawerLabelStyle: { fontSize: 22 },
-          drawerActiveTintColor: "#5f98b0",
-          headerStyle: { backgroundColor: "#0B2B96" },
-          headerTitleStyle: { color: "white", alignSelf: "center" },
-          headerTintColor: "white",
+      initialRouteName="Home"
+      screenOptions={{
+        drawerLabelStyle: { fontSize: 22 },
+        drawerActiveTintColor: "#5f98b0",
+        headerStyle: { backgroundColor: "#0B2B96" },
+        headerTitleStyle: { color: "white", alignSelf: "center" },
+        headerTintColor: "white",
+      }}
+    >
+      <Drawer.Screen
+        options={{
+          drawerIcon: ({ focused, size }) => (
+            <Ionicons
+              name="md-home"
+              size={size}
+              color={focused ? "#5f98b0" : "ccc"}
+            />
+          ),
         }}
-      >
-        <Drawer.Screen
-          options={{
-            drawerIcon: ({ focused, size }) => (
-              <Ionicons
-                name="md-home"
-                size={size}
-                color={focused ? "#5f98b0" : "ccc"}
-              />
-            ),
-          }}
-          name="Nyheter"
-          component={HomeScreen}
-        />
-        <Drawer.Screen
-          options={{
-            drawerIcon: ({ focused, size }) => (
-              <Ionicons
-                name="calculator-sharp"
-                size={size}
-                color={focused ? "ccc" : "#5f98b0"}
-              />
-            ),
-          }}
-          name="Kalkylator"
-          component={DensityCalculationScreen}
-        />
-        <Drawer.Screen
-          options={{
-            drawerIcon: ({ focused, size }) => (
-              <Ionicons
-                name="documents-sharp"
-                size={size}
-                color={focused ? "ccc" : "#5f98b0"}
-              />
-            ),
-          }}
-          name="Lathund"
-          component={LatHundScreen}
-        />
-        <Drawer.Screen
-          options={{
-            drawerIcon: ({ focused, size }) => (
-              <Ionicons
-                name="md-document-sharp"
-                size={size}
-                color={focused ? "ccc" : "#5f98b0"}
-              />
-            ),
-          }}
-          name="EgenKontroll"
-          component={LoadControll}
-        />
-        <Drawer.Screen
-          options={{
-            drawerIcon: ({ focused, size }) => (
-              <Ionicons
-                name="person"
-                size={size}
-                color={focused ? "ccc" : "#5f98b0"}
-              />
-            ),
-          }}
-          name="Medarbetare"
-          component={ContactScreen}
-        />
-      </Drawer.Navigator>
-  )
+        name="Nyheter"
+        component={HomeScreen}
+      />
+      <Drawer.Screen
+        options={{
+          drawerIcon: ({ focused, size }) => (
+            <Ionicons
+              name="calculator-sharp"
+              size={size}
+              color={focused ? "ccc" : "#5f98b0"}
+            />
+          ),
+        }}
+        name="Kalkylator"
+        component={DensityCalculationScreen}
+      />
+      <Drawer.Screen
+        options={{
+          drawerIcon: ({ focused, size }) => (
+            <Ionicons
+              name="documents-sharp"
+              size={size}
+              color={focused ? "ccc" : "#5f98b0"}
+            />
+          ),
+        }}
+        name="Lathund"
+        component={LatHundScreen}
+      />
+      <Drawer.Screen
+        options={{
+          drawerIcon: ({ focused, size }) => (
+            <Ionicons
+              name="md-document-sharp"
+              size={size}
+              color={focused ? "ccc" : "#5f98b0"}
+            />
+          ),
+        }}
+        name="EgenKontroll"
+        component={LoadControll}
+      />
+      <Drawer.Screen
+        options={{
+          drawerIcon: ({ focused, size }) => (
+            <Ionicons
+              name="person"
+              size={size}
+              color={focused ? "ccc" : "#5f98b0"}
+            />
+          ),
+        }}
+        name="Medarbetare"
+        component={ContactScreen}
+      />
+    </Drawer.Navigator>
+  );
 }
 
 function HomeScreen({ navigation }) {
@@ -174,14 +230,14 @@ function HomeScreen({ navigation }) {
 
 function LatHundScreen({ navigation }) {
   return (
-      <View style={styles.wrappableContainer}>
-        <MainHeader />
-        <LatHund navigation={navigation} />
-      </View>
+    <View style={styles.wrappableContainer}>
+      <MainHeader />
+      <LatHund navigation={navigation} />
+    </View>
   );
 }
 
-function DensityCalculationScreen(navigation) {
+function DensityCalculationScreen({ navigation }) {
   const [highOrLowDensityText, setHighorLowDensityText] = useState("");
   const [calculatedDensity, setCalculatedDensity] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
@@ -235,6 +291,7 @@ function DensityCalculationScreen(navigation) {
           <DensityInputs calculateDensity={run} />
         </View>
         <ModalView
+          navigation={navigation}
           modalVisible={modalVisible}
           calculatedDensity={calculatedDensity}
           acceptedDensity={acceptedDensity}
@@ -272,7 +329,8 @@ const LoadControll = () => {
 export default function App() {
   return (
     <NavigationContainer theme={theme}>
-      <stack.Navigator initialRouteName="Home"
+      <stack.Navigator
+        initialRouteName="Home"
         screenOptions={{
           headerStyle: {
             backgroundColor: "#0B2B96",
@@ -287,13 +345,17 @@ export default function App() {
           headerTintColor: "white",
         }}
       >
-        <stack.Screen name="Isoleringslandslaget"component={Root} options={{headerShown: false}}/>
+        <stack.Screen
+          name="Isoleringslandslaget"
+          component={Root}
+          options={{ headerShown: false }}
+        />
         <stack.Screen
           name="ImageDetailScreen"
           component={ImageDetailScreen}
           options={{ title: "Bild" }}
         />
-        </stack.Navigator>   
+      </stack.Navigator>
     </NavigationContainer>
   );
 }

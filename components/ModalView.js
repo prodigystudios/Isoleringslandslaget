@@ -1,5 +1,11 @@
 import { Modal, View, Button, Text, StyleSheet } from "react-native";
-function ModalView(props) {
+
+function HandleNavigation(nav, closeModal) {
+  closeModal();
+  nav.navigate("Lathund");
+}
+
+function ModalView(props, { navigation }) {
   if (props.acceptedDensity) {
     return (
       <Modal animationType="fade" visible={props.modalVisible}>
@@ -11,7 +17,19 @@ function ModalView(props) {
             Du ligger rätt i densitet för {props.selectedConstructionType}s
             installation
           </Text>
-          <Button title="Stäng" onPress={props.onCloseModal}></Button>
+          <Text style={styles.modalViewText}>
+            Om du är osäker kan du alltid gå till lathunden för att se godkända
+            densiteter!
+          </Text>
+          <View style={styles.buttonContainer}>
+            <Button
+              title="Till lathunden"
+              onPress={() =>
+                HandleNavigation(props.navigation, props.onCloseModal)
+              }
+            ></Button>
+            <Button title="Stäng" onPress={props.onCloseModal}></Button>
+          </View>
         </View>
       </Modal>
     );
@@ -29,23 +47,18 @@ function ModalView(props) {
           </Text>
           <Text style={styles.modalViewText}>
             Se över dina inställningar på maskinen, säkerställ kvaliten på
-            materialet o försök igen!
+            materialet o försök igen! Kolla gärna in lathunden om du är osäker
+            på vilken densitet som det ska vara!
           </Text>
-          <View>
-            <Text style={styles.modalViewText}>
-              Godkända densiteter: Vägg/snedtak 45-52kg/m3
-            </Text>
-            <Text style={styles.modalViewText}>
-              Godkända densiteter: vind 28-32kg/m3
-            </Text>
-            <Text style={styles.modalViewText}>
-              Godkända densiteter: BottenBjälklag 42-45kg/m3
-            </Text>
-            <Text style={styles.modalViewText}>
-              Godkända densiteter: MellanBjälklag 38-42kg/m3
-            </Text>
+          <View style={styles.buttonContainer}>
+            <Button
+              title="Till lathunden"
+              onPress={() =>
+                HandleNavigation(props.navigation, props.onCloseModal)
+              }
+            ></Button>
+            <Button title="Stäng" onPress={props.onCloseModal}></Button>
           </View>
-          <Button title="Stäng" onPress={props.onCloseModal}></Button>
         </View>
       </Modal>
     );
@@ -64,7 +77,7 @@ const styles = StyleSheet.create({
   },
   densityText: {
     color: "white",
-    fontSize: 19,
+    fontSize: 20,
   },
   modalViewText: {
     marginBottom: 30,
@@ -72,13 +85,19 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   acceptedDenisty: {
-    marginBottom: 30,
+    marginVertical: 30,
     color: "green",
-    fontSize: 40,
+    fontSize: 25,
+    flexWrap: "nowrap",
   },
   notAcceptedDenisty: {
-    marginBottom: 30,
+    marginVertical: 30,
     color: "red",
-    fontSize: 40,
+    fontSize: 25,
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    marginTop: 50,
+    gap:50,
   },
 });
