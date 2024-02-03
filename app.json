@@ -2,9 +2,9 @@
   "expo": {
     "name": "Isoleringslandslaget",
     "slug": "isoleringslandslagetapp",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/IsoleringsLandslaget.png",
     "userInterfaceStyle": "light",
     "backgroundColor": "#0B2B96",
     "splash": {
