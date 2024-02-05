@@ -273,7 +273,7 @@ function Root() {
         options={{
           tabBarIcon: ({ focused, size }) => (
             <Ionicons
-              name="md-home"
+              name="home"
               size={size}
               color={focused ? "#5f98b0" : "black"}
             />
