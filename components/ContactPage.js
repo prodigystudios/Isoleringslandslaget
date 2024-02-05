@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
-import call from "react-native-phone-call";
+//import call from "react-native-phone-call";
 import { GetDB } from "./firebase";
 import { getDocs, query, collection } from "firebase/firestore";
 import { useEffect, useState } from "react";
