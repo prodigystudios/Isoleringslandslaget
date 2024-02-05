@@ -83,8 +83,8 @@ const styles = StyleSheet.create({
     padding:20
   },
   imageSmall: {
-    width: windowWidth * 0.5,
-    height: windowHeight * 0.3,
+    width: windowWidth * 0.7,
+    height: windowHeight * 0.5,
     resizeMode: "cover",
   },
 });

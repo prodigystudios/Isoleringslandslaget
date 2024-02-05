@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -17,7 +17,6 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Platform } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { createDrawerNavigator } from "@react-navigation/drawer";
 import ModalView from "./components/ModalView";
 import DensityInputs from "./components/DensityInput";
 import LatHund from "./components/LatHund";
@@ -25,7 +24,9 @@ import ImageDetailScreen from "./components/ImageDetailScreen";
 import MainHeader from "./components/MainHeader";
 import News from "./components/News";
 import ContactPage from "./components/ContactPage";
+import NewsModalView from "./components/NewsModalView";
 
+// import { createDrawerNavigator } from "@react-navigation/drawer";
 const CustomHeader = () => (
   <View
     style={{
@@ -249,14 +250,8 @@ const theme = {
 function MainStackScreen() {
   return (
     <stack.Navigator>
-      <stack.Screen
-        name="lathund"
-        component={LatHundScreen}
-      />
-      <stack.Screen
-        name="Kalkylator"
-        component={DensityCalculationScreen}
-      />
+      <stack.Screen name="lathund" component={LatHundScreen} />
+      <stack.Screen name="Kalkylator" component={DensityCalculationScreen} />
       <stack.Screen
         name="ImageDetailScreen"
         component={ImageDetailScreen}
@@ -370,7 +365,6 @@ function NewsScreen() {
     </>
   );
 }
-
 function LatHundScreen({ navigation }) {
   return (
     <>
@@ -474,41 +468,46 @@ const LoadControll = () => {
 
 export default function App() {
   return (
-    <NavigationContainer theme={theme}>
-      <stack.Navigator
-        initialRouteName="Home"
-        screenOptions={{
-          headerStyle: {
-            backgroundColor: "white",
-          },
-          headerTitleStyle: {
-            color: "white",
-            alignSelf: "center",
-          },
-          headerBackTitleStyle: {
-            fontSize: 20,
-          },
-          headerTintColor: "black",
-        }}
-      >
-        <stack.Screen
-          name="Isoleringslandslaget"
-          component={Root}
-          options={{ headerTitle: () => <CustomHeader />, title: "Hem" }}
-        />
-        <stack.Screen
-          name="mainStack"
-          component={MainStackScreen}
-          options={({ route }) => ({
-            title:
-              route.params && route.params.previousScreenName
-                ? `Screen from ${route.params.previousScreenName}`
-                : "Default Title",
-            headerTitle: () => <CustomHeader />,
-          })}
-        />
-      </stack.Navigator>
-    </NavigationContainer>
+    <>
+    <View>
+      <NewsModalView/>
+    </View>
+      <NavigationContainer theme={theme}>
+        <stack.Navigator
+          initialRouteName="Home"
+          screenOptions={{
+            headerStyle: {
+              backgroundColor: "white",
+            },
+            headerTitleStyle: {
+              color: "white",
+              alignSelf: "center",
+            },
+            headerBackTitleStyle: {
+              fontSize: 20,
+            },
+            headerTintColor: "black",
+          }}
+        >
+          <stack.Screen
+            name="Isoleringslandslaget"
+            component={Root}
+            options={{ headerTitle: () => <CustomHeader />, title: "Hem" }}
+          />
+          <stack.Screen
+            name="mainStack"
+            component={MainStackScreen}
+            options={({ route }) => ({
+              title:
+                route.params && route.params.previousScreenName
+                  ? `Screen from ${route.params.previousScreenName}`
+                  : "Default Title",
+              headerTitle: () => <CustomHeader />,
+            })}
+          />
+        </stack.Navigator>
+      </NavigationContainer>
+      </>
   );
 }
 
@@ -533,7 +532,7 @@ const styles = StyleSheet.create({
   },
   wrappableContainer: {
     flex: 1,
-    paddingBottom:0,
+    paddingBottom: 0,
   },
   headerImageContainer: {
     marginTop: 10,
@@ -543,4 +542,8 @@ const styles = StyleSheet.create({
     overflow: "visible",
     elevation: Platform.OS === "android" ? 5 : 0, // Add elevation for Android
   },
+  newsModal:{
+    width:"80%",
+    height:"80%"
+  }
 });
