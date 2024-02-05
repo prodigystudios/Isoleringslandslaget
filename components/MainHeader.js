@@ -15,8 +15,8 @@ const styles = StyleSheet.create({
   mainHeader: {
     alignSelf: "center",
     resizeMode: "contain",
-    width: 150,
-    height: 150,
+    width: 100,
+    height: 100,
     marginTop: 10,
   },
 });

@@ -260,7 +260,12 @@ function MainStackScreen() {
       <stack.Screen
         name="ImageDetailScreen"
         component={ImageDetailScreen}
-        options={{ title: "Bild" }}
+        options={({ route }) => ({
+          title:
+            route.params && route.params.selectedImageTitel
+              ? `${route.params.selectedImageTitel}`
+              : "Default Title",
+        })}
       />
     </stack.Navigator>
   );
@@ -527,8 +532,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   wrappableContainer: {
-    flex: 2,
-    paddingBottom: 300,
+    flex: 1,
+    paddingBottom:0,
   },
   headerImageContainer: {
     marginTop: 10,

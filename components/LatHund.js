@@ -40,16 +40,19 @@ function LatHund({ navigation }) {
       .find((item) => item.key === key);
     navigation.navigate("ImageDetailScreen", {
       selectedImage: selectedImage.source,
-      previousScreenName: 'previousScreenName'
+      previousScreenName: 'previousScreenName',
+      selectedImageTitel: selectedImage.title
+
     });
   }
   return (
-    <View>
+    <View style={{flex:1}}>
       <Text style={styles.headerText}>
         Klicka på bilderna för att öppna dom i helskärm
       </Text>
       <SectionList
         sections={data}
+        contentContainerStyle={{flexGrow:1}}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
           <Pressable onPress={() => OpenImage(item.key)}>
@@ -68,16 +71,16 @@ export default LatHund;
 
 const styles = StyleSheet.create({
   headerText: {
-    marginTop: 20,
+    marginTop: 1,
     marginBottom: 10,
     alignSelf: "center",
     fontSize: 18,
   },
   imageContainer: {
-    marginTop: 10,
+    flex:1,
     justifyContent: "center",
-    alignContent: "center",
     alignItems: "center",
+    padding:20
   },
   imageSmall: {
     width: windowWidth * 0.5,
