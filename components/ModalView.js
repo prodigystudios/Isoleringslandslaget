@@ -2,7 +2,9 @@ import { Modal, View, Button, Text, StyleSheet } from "react-native";
 
 function HandleNavigation(nav, closeModal) {
   closeModal();
-  nav.navigate("Lathund");
+  nav.navigate("mainStack", {
+    screen:"lathund"
+  });
 }
 
 function ModalView(props, { navigation }) {

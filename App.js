@@ -1,7 +1,19 @@
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
-import { StyleSheet, Text, View, Pressable, Linking } from "react-native";
-import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
+import {
+  StyleSheet,
+  View,
+  Linking,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
+import {
+  NavigationContainer,
+  DefaultTheme,
+  useNavigation,
+} from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Platform } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
@@ -14,8 +26,24 @@ import MainHeader from "./components/MainHeader";
 import News from "./components/News";
 import ContactPage from "./components/ContactPage";
 
-const Drawer = createDrawerNavigator();
+const CustomHeader = () => (
+  <View
+    style={{
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
+    }}
+  >
+    <Image
+      source={require("./assets/isoleringslandslagetHeader.png")}
+      style={{ width: 125, height: 40 }}
+    />
+  </View>
+);
+
+// const Drawer = createDrawerNavigator();
 const stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 const densityTypes = [
   {
     index: 1,
@@ -136,91 +164,201 @@ const theme = {
   colors: { ...DefaultTheme.colors, background: "#bfc1c9" },
 };
 
+//Drawer navigation Keep for later use or changes!
+// function Root() {
+//   return (
+//     <Drawer.Navigator
+//       initialRouteName="Home"
+//       screenOptions={{
+//         drawerLabelStyle: { fontSize: 22 },
+//         drawerActiveTintColor: "#5f98b0",
+//         headerStyle: { backgroundColor: "white" },
+//         headerTitleStyle: { color: "black", alignSelf: "center" },
+//         headerTintColor: "white",
+//       }}
+//     >
+//       <Drawer.Screen
+//         options={{
+//           drawerIcon: ({ focused, size }) => (
+//             <Ionicons
+//               name="md-home"
+//               size={size}
+//               color={focused ? "#5f98b0" : "ccc"}
+//             />
+//           ),
+//         }}
+//         name="Nyheter"
+//         component={HomeScreen}
+//       />
+//       <Drawer.Screen
+//         options={{
+//           drawerIcon: ({ focused, size }) => (
+//             <Ionicons
+//               name="calculator-sharp"
+//               size={size}
+//               color={focused ? "ccc" : "#5f98b0"}
+//             />
+//           ),
+//         }}
+//         name="Kalkylator"
+//         component={DensityCalculationScreen}
+//       />
+//       <Drawer.Screen
+//         options={{
+//           drawerIcon: ({ focused, size }) => (
+//             <Ionicons
+//               name="documents-sharp"
+//               size={size}
+//               color={focused ? "ccc" : "#5f98b0"}
+//             />
+//           ),
+//         }}
+//         name="Lathund"
+//         component={LatHundScreen}
+//       />
+//       <Drawer.Screen
+//         options={{
+//           drawerIcon: ({ focused, size }) => (
+//             <Ionicons
+//               name="md-document-sharp"
+//               size={size}
+//               color={focused ? "ccc" : "#5f98b0"}
+//             />
+//           ),
+//         }}
+//         name="Egenkontroll"
+//         component={LoadControll}
+//       />
+//       <Drawer.Screen
+//         options={{
+//           drawerIcon: ({ focused, size }) => (
+//             <Ionicons
+//               name="person"
+//               size={size}
+//               color={focused ? "ccc" : "#5f98b0"}
+//             />
+//           ),
+//         }}
+//         name="Medarbetare"
+//         component={ContactScreen}
+//       />
+//     </Drawer.Navigator>
+//   );
+// }
+
+function MainStackScreen() {
+  return (
+    <stack.Navigator>
+      <stack.Screen
+        name="lathund"
+        component={LatHundScreen}
+      />
+      <stack.Screen
+        name="Kalkylator"
+        component={DensityCalculationScreen}
+      />
+      <stack.Screen
+        name="ImageDetailScreen"
+        component={ImageDetailScreen}
+        options={{ title: "Bild" }}
+      />
+    </stack.Navigator>
+  );
+}
+
 function Root() {
   return (
-    <Drawer.Navigator
-      initialRouteName="Home"
-      screenOptions={{
-        drawerLabelStyle: { fontSize: 22 },
-        drawerActiveTintColor: "#5f98b0",
-        headerStyle: { backgroundColor: "#0B2B96" },
-        headerTitleStyle: { color: "white", alignSelf: "center" },
-        headerTintColor: "white",
-      }}
-    >
-      <Drawer.Screen
+    <Tab.Navigator>
+      <Tab.Screen
         options={{
-          drawerIcon: ({ focused, size }) => (
+          tabBarIcon: ({ focused, size }) => (
             <Ionicons
               name="md-home"
               size={size}
-              color={focused ? "#5f98b0" : "ccc"}
+              color={focused ? "#5f98b0" : "black"}
+            />
+          ),
+        }}
+        name="Hem"
+        component={HomeScreen}
+      />
+      <Tab.Screen
+        options={{
+          tabBarIcon: ({ focused, size }) => (
+            <Ionicons
+              name="newspaper"
+              size={size}
+              color={focused ? "#5f98b0" : "black"}
             />
           ),
         }}
         name="Nyheter"
-        component={HomeScreen}
+        component={NewsScreen}
       />
-      <Drawer.Screen
+      <Tab.Screen
         options={{
-          drawerIcon: ({ focused, size }) => (
+          tabBarIcon: ({ focused, size }) => (
             <Ionicons
-              name="calculator-sharp"
+              name="call"
               size={size}
-              color={focused ? "ccc" : "#5f98b0"}
+              color={focused ? "#5f98b0" : "black"}
             />
           ),
         }}
-        name="Kalkylator"
-        component={DensityCalculationScreen}
-      />
-      <Drawer.Screen
-        options={{
-          drawerIcon: ({ focused, size }) => (
-            <Ionicons
-              name="documents-sharp"
-              size={size}
-              color={focused ? "ccc" : "#5f98b0"}
-            />
-          ),
-        }}
-        name="Lathund"
-        component={LatHundScreen}
-      />
-      <Drawer.Screen
-        options={{
-          drawerIcon: ({ focused, size }) => (
-            <Ionicons
-              name="md-document-sharp"
-              size={size}
-              color={focused ? "ccc" : "#5f98b0"}
-            />
-          ),
-        }}
-        name="EgenKontroll"
-        component={LoadControll}
-      />
-      <Drawer.Screen
-        options={{
-          drawerIcon: ({ focused, size }) => (
-            <Ionicons
-              name="person"
-              size={size}
-              color={focused ? "ccc" : "#5f98b0"}
-            />
-          ),
-        }}
-        name="Medarbetare"
+        name="Kontaktlista"
         component={ContactScreen}
       />
-    </Drawer.Navigator>
+    </Tab.Navigator>
   );
 }
 
-function HomeScreen({ navigation }) {
+function HomeScreen({}) {
+  const navigation = useNavigation();
+  const navigateToKalkylator = () => {
+    navigation.navigate("mainStack", {
+      screen: "Kalkylator",
+    });
+  };
+  const navigateToLathund = () => {
+    navigation.navigate("mainStack", {
+      screen: "lathund",
+    });
+  };
+  return (
+    <View style={styles.menuButtonContainer}>
+      <ScrollView>
+        <TouchableOpacity onPress={navigateToKalkylator}>
+          <View style={styles.buttonContainerYellow}>
+            <Image
+              style={{ width: 215, height: 215 }}
+              source={require("./assets/kalkylator.png")}
+            />
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={navigateToLathund}>
+          <View style={styles.buttonContainerBlue}>
+            <Image
+              style={{ width: 215, height: 215 }}
+              source={require("./assets/lathund.png")}
+            />
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <View style={styles.buttonContainerYellow}>
+            <Image
+              style={{ width: 215, height: 215 }}
+              source={require("./assets/egenkontroll.png")}
+            />
+          </View>
+        </TouchableOpacity>
+      </ScrollView>
+    </View>
+  );
+}
+function NewsScreen() {
   return (
     <>
-      <StatusBar style="light" />
+      <StatusBar style="dark" />
       <View>
         <News />
       </View>
@@ -230,10 +368,13 @@ function HomeScreen({ navigation }) {
 
 function LatHundScreen({ navigation }) {
   return (
-    <View style={styles.wrappableContainer}>
-      <MainHeader />
-      <LatHund navigation={navigation} />
-    </View>
+    <>
+      <StatusBar style="dark" />
+      <View style={styles.wrappableContainer}>
+        <MainHeader />
+        <LatHund navigation={navigation} />
+      </View>
+    </>
   );
 }
 
@@ -282,7 +423,7 @@ function DensityCalculationScreen({ navigation }) {
 
   return (
     <>
-      <StatusBar style="light" />
+      <StatusBar style="dark" />
       <View>
         <View style={styles.headerImageContainer}>
           <MainHeader />
@@ -333,7 +474,7 @@ export default function App() {
         initialRouteName="Home"
         screenOptions={{
           headerStyle: {
-            backgroundColor: "#0B2B96",
+            backgroundColor: "white",
           },
           headerTitleStyle: {
             color: "white",
@@ -342,18 +483,24 @@ export default function App() {
           headerBackTitleStyle: {
             fontSize: 20,
           },
-          headerTintColor: "white",
+          headerTintColor: "black",
         }}
       >
         <stack.Screen
           name="Isoleringslandslaget"
           component={Root}
-          options={{ headerShown: false }}
+          options={{ headerTitle: () => <CustomHeader />, title: "Hem" }}
         />
         <stack.Screen
-          name="ImageDetailScreen"
-          component={ImageDetailScreen}
-          options={{ title: "Bild" }}
+          name="mainStack"
+          component={MainStackScreen}
+          options={({ route }) => ({
+            title:
+              route.params && route.params.previousScreenName
+                ? `Screen from ${route.params.previousScreenName}`
+                : "Default Title",
+            headerTitle: () => <CustomHeader />,
+          })}
         />
       </stack.Navigator>
     </NavigationContainer>
@@ -361,46 +508,34 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-  newsContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignContent: "center",
+  menuButtonContainer: {
+    marginHorizontal: 10,
+    marginTop: 10,
   },
-
+  buttonContainerYellow: {
+    backgroundColor: "yellow",
+    borderRadius: 10,
+    padding: 20,
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  buttonContainerBlue: {
+    backgroundColor: "#4287f5",
+    borderRadius: 10,
+    padding: 20,
+    alignItems: "center",
+    marginBottom: 10,
+  },
   wrappableContainer: {
     flex: 2,
     paddingBottom: 300,
   },
-  mainMenuContainer: {
-    marginVertical: 100,
-    justifyContent: "center",
-    alignContent: "center",
-  },
   headerImageContainer: {
-    marginTop: 50,
+    marginTop: 10,
     justifyContent: "center",
     alignItems: "center",
     alignContent: "center",
     overflow: "visible",
     elevation: Platform.OS === "android" ? 5 : 0, // Add elevation for Android
-  },
-  headerImage: {
-    height: 150,
-    width: 150,
-    resizeMode: "contain",
-  },
-  MainMenuPressableContainer: {
-    alignItems: "center",
-    backgroundColor: "#514b83",
-    borderColor: "white",
-    borderWidth: 1,
-    borderRadius: 18,
-    paddingTop: 10,
-    paddingBottom: 10,
-    marginHorizontal: 20,
-  },
-  MainMenuButtonsText: {
-    fontSize: 24,
-    color: "white",
   },
 });

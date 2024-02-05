@@ -40,6 +40,7 @@ function LatHund({ navigation }) {
       .find((item) => item.key === key);
     navigation.navigate("ImageDetailScreen", {
       selectedImage: selectedImage.source,
+      previousScreenName: 'previousScreenName'
     });
   }
   return (

@@ -32,7 +32,7 @@ const renderItem = ({ item }) => (
         {item.firstName} {item.lastName}
       </Text>
       <Text style={styles.phoneNumberText}>{item.phoneNumber}</Text>
-      <Text style={styles.emailText}>{item.email}</Text>
+      <Text style={styles.emailText} ellipsizeMode="tail">{item.email}</Text>
     </View>
   </TouchableOpacity>
 );
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   emailText: {
-    fontSize: 20,
+    fontSize: 15,
     marginTop: 5,
   },
   loadingContainer: { marginVertical:"50%",flex: 2, justifyContent: "center", alignItems: "center" },
