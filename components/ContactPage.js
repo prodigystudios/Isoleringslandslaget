@@ -8,8 +8,8 @@ import {
   ActivityIndicator,
 } from "react-native";
 //import call from "react-native-phone-call";
-import { GetDB } from "./firebase";
-import { getDocs, query, collection } from "firebase/firestore";
+// import { GetDB } from "./firebase";
+// import { getDocs, query, collection } from "firebase/firestore";
 import { useEffect, useState } from "react";
 
 const cleanPhoneNumber = (phoneNumber) => {
@@ -40,33 +40,33 @@ function ContactPage() {
   const [contacts, setContacts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    async function FetchDb() {
-      try {
-        const orderRef = collection(GetDB(), "Contacts");
-        const q = query(orderRef);
-        const querySnapShot = await getDocs(q);
+  // useEffect(() => {
+  //   async function FetchDb() {
+  //     try {
+  //       const orderRef = collection(GetDB(), "Contacts");
+  //       const q = query(orderRef);
+  //       const querySnapShot = await getDocs(q);
 
-        const tempContactList = [];
-        querySnapShot.forEach((doc) => {
-          const tempContact = {
-            id: doc.id,
-            firstName: doc.data().firstName,
-            lastName: doc.data().lastName,
-            phoneNumber: doc.data().phoneNumber,
-            email: doc.data().email,
-          };
-          tempContactList.push(tempContact);
-        });
-        setContacts(tempContactList);
-      } catch (error) {
-        console.error("Error fetching data", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-    FetchDb();
-  }, []);
+  //       const tempContactList = [];
+  //       querySnapShot.forEach((doc) => {
+  //         const tempContact = {
+  //           id: doc.id,
+  //           firstName: doc.data().firstName,
+  //           lastName: doc.data().lastName,
+  //           phoneNumber: doc.data().phoneNumber,
+  //           email: doc.data().email,
+  //         };
+  //         tempContactList.push(tempContact);
+  //       });
+  //       setContacts(tempContactList);
+  //     } catch (error) {
+  //       console.error("Error fetching data", error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   }
+  //   FetchDb();
+  // }, []);
 
   return (
     <>
