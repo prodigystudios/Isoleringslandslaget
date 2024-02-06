@@ -7,10 +7,10 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
-//import call from "react-native-phone-call";
-// import { GetDB } from "./firebase";
-// import { getDocs, query, collection } from "firebase/firestore";
+import call from "react-native-phone-call";
 import { useEffect, useState } from "react";
+import { FIRESTORE_DB } from "./firebase";
+import { getDocs, collection } from "firebase/firestore";
 
 const cleanPhoneNumber = (phoneNumber) => {
   return phoneNumber.replace(/[-\s]/g, "");
@@ -32,7 +32,9 @@ const renderItem = ({ item }) => (
         {item.firstName} {item.lastName}
       </Text>
       <Text style={styles.phoneNumberText}>{item.phoneNumber}</Text>
-      <Text style={styles.emailText} ellipsizeMode="tail">{item.email}</Text>
+      <Text style={styles.emailText} ellipsizeMode="tail">
+        {item.email}
+      </Text>
     </View>
   </TouchableOpacity>
 );
@@ -40,34 +42,32 @@ function ContactPage() {
   const [contacts, setContacts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // useEffect(() => {
-  //   async function FetchDb() {
-  //     try {
-  //       const orderRef = collection(GetDB(), "Contacts");
-  //       const q = query(orderRef);
-  //       const querySnapShot = await getDocs(q);
-
-  //       const tempContactList = [];
-  //       querySnapShot.forEach((doc) => {
-  //         const tempContact = {
-  //           id: doc.id,
-  //           firstName: doc.data().firstName,
-  //           lastName: doc.data().lastName,
-  //           phoneNumber: doc.data().phoneNumber,
-  //           email: doc.data().email,
-  //         };
-  //         tempContactList.push(tempContact);
-  //       });
-  //       setContacts(tempContactList);
-  //     } catch (error) {
-  //       console.error("Error fetching data", error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   }
-  //   FetchDb();
-  // }, []);
-
+  useEffect(() => {
+    async function fetchDB() {
+      try {
+        const docRef = collection(FIRESTORE_DB, "Contacts");
+        const docSnapshot = await getDocs(docRef);
+        const tempContacts = [];
+        docSnapshot.forEach((contact) => {
+          const tempContact = {
+            id: contact.id,
+            firstName: contact.data().firstName,
+            lastName: contact.data().lastName,
+            phoneNumber: contact.data().phoneNumber,
+            email: contact.data().email,
+          };
+          console.log(tempContact);
+          tempContacts.push(tempContact);
+        });
+        setContacts(tempContacts);
+      } catch (error) {
+        console.log("this is the error msg:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchDB();
+  }, []);
   return (
     <>
       <Text style={styles.headerText}>Medarbetare</Text>
@@ -111,5 +111,10 @@ const styles = StyleSheet.create({
     fontSize: 15,
     marginTop: 5,
   },
-  loadingContainer: { marginVertical:"50%",flex: 2, justifyContent: "center", alignItems: "center" },
+  loadingContainer: {
+    marginVertical: "50%",
+    flex: 2,
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });
