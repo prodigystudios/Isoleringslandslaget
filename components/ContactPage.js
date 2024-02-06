@@ -10,7 +10,7 @@ import {
 import call from "react-native-phone-call";
 import { useEffect, useState } from "react";
 import { FIRESTORE_DB } from "./firebase";
-import { getDocs, collection } from "firebase/firestore";
+import { getDocs, collection,orderBy,query } from "firebase/firestore";
 
 const cleanPhoneNumber = (phoneNumber) => {
   return phoneNumber.replace(/[-\s]/g, "");
@@ -46,7 +46,8 @@ function ContactPage() {
     async function fetchDB() {
       try {
         const docRef = collection(FIRESTORE_DB, "Contacts");
-        const docSnapshot = await getDocs(docRef);
+        const q = query(docRef,orderBy("firstName","asc"))
+        const docSnapshot = await getDocs(q);
         const tempContacts = [];
         docSnapshot.forEach((contact) => {
           const tempContact = {

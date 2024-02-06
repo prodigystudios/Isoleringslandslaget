@@ -2,7 +2,7 @@
   "expo": {
     "name": "Isoleringslandslaget",
     "slug": "isoleringslandslagetapp",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -18,7 +18,11 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.w.ali.isoleringslandslagetapp",
-      "infoPlist":{"LSApplicationQueriesSchemes": ["tel"]}
+      "infoPlist": {
+        "LSApplicationQueriesSchemes": [
+          "tel"
+        ]
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -34,6 +38,12 @@
         "projectId": "40f14d14-bcc2-4375-bad9-1f1c3a77fa60"
       }
     },
-    "owner": "w.ali"
+    "owner": "w.ali",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/40f14d14-bcc2-4375-bad9-1f1c3a77fa60"
+    }
   }
 }
