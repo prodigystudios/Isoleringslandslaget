@@ -446,9 +446,11 @@ function DensityCalculationScreen({ navigation }) {
 }
 function ContactScreen() {
   return (
-    <View>
-      <ContactPage />
-    </View>
+    <ScrollView>
+      <View>
+        <ContactPage />
+      </View>
+    </ScrollView>
   );
 }
 const LoadControll = () => {
@@ -469,9 +471,9 @@ const LoadControll = () => {
 export default function App() {
   return (
     <>
-    <View>
-      <NewsModalView/>
-    </View>
+      <View>
+        <NewsModalView />
+      </View>
       <NavigationContainer theme={theme}>
         <stack.Navigator
           initialRouteName="Home"
@@ -507,7 +509,7 @@ export default function App() {
           />
         </stack.Navigator>
       </NavigationContainer>
-      </>
+    </>
   );
 }
 
@@ -517,7 +519,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   buttonContainerYellow: {
-    backgroundColor: "yellow",
+    backgroundColor: "#f08513",
     borderRadius: 10,
     padding: 20,
     alignItems: "center",
@@ -542,8 +544,8 @@ const styles = StyleSheet.create({
     overflow: "visible",
     elevation: Platform.OS === "android" ? 5 : 0, // Add elevation for Android
   },
-  newsModal:{
-    width:"80%",
-    height:"80%"
-  }
+  newsModal: {
+    width: "80%",
+    height: "80%",
+  },
 });

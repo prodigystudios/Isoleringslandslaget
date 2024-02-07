@@ -35,7 +35,14 @@ export default function NewsModal(props) {
         </View>
         <View style={styles.newsModalContextContainer}>
           <Text style={styles.contextText}>
-            Det här är isoleringslandslagets nya app för installatörer!
+            vi har samlats här idag för konferens. Detta är en ny del i
+            utvecklingen av entreprenad som kommer att lättja eran vardag för
+            att informationen som vi har påpekat från ledningen måste in! Vi
+            måste stärka alla led. Vi har sett brister med appen som ingen
+            verkar använda sig av ändå! Med hjälp av William som har utbildning
+            inom området kodning så har det bollas idéer som ledde till början
+            av denna app. Se nu till att använda denna flitigt för det här skall
+            vara ett hjälpmedel för oss alla.
           </Text>
         </View>
       </View>
@@ -69,6 +76,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 30,
     alignItems: "center",
+    marginHorizontal:12,
   },
   contextText: {
     fontSize: 16,
@@ -78,8 +86,8 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     padding: 5,
     opacity: 0.9,
-    borderColor:"black",
-    borderWidth:1,
+    borderColor: "black",
+    borderWidth: 1,
   },
   closeButtonText: {
     fontSize: 20,
