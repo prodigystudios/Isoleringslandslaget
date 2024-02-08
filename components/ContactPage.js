@@ -199,15 +199,16 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: "#d6d9da",
     borderRadius: 20,
-    padding: 10,
+    padding:10,
   },
   container: {
-    padding: 20,
     marginTop: 30,
     marginBottom: 15,
     borderColor: "#d6d7da",
     borderWidth: 0.8,
     borderRadius: 15,
+    paddingHorizontal:20,
+    paddingTop:20,
   },
   layoutAnimationHeadingContainer: {
     flexDirection: "row",

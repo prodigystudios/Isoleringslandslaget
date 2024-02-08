@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   StyleSheet,
   View,
@@ -162,7 +162,7 @@ const densityTypes = [
 
 const theme = {
   ...DefaultTheme,
-  colors: { ...DefaultTheme.colors, background: "#bfc1c9" },
+  colors: { ...DefaultTheme.colors, background: "white" },
 };
 
 //Drawer navigation Keep for later use or changes!
@@ -268,7 +268,7 @@ function MainStackScreen() {
 
 function Root() {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator screenOptions={{}}>
       <Tab.Screen
         options={{
           tabBarIcon: ({ focused, size }) => (

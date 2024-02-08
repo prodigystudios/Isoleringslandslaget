@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
   },
   pressableButtonsText: {
     fontSize: 24,
-    color: "#F7F7F7",
+    color: "black",
   },
   selectListContainer: {
     flexDirection: "row",
