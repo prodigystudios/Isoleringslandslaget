@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -11,9 +11,8 @@ import {
   Platform,
 } from "react-native";
 import call from "react-native-phone-call";
-import { useEffect, useState } from "react";
-import { FIRESTORE_DB } from "./firebase";
 import { getDocs, collection, orderBy, query } from "firebase/firestore";
+import { FIRESTORE_DB } from "./firebase";
 
 if (
   Platform.OS === "android" &&
@@ -22,9 +21,7 @@ if (
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
-const cleanPhoneNumber = (phoneNumber) => {
-  return phoneNumber.replace(/[-\s]/g, "");
-};
+const cleanPhoneNumber = (phoneNumber) => phoneNumber.replace(/[-\s]/g, "");
 
 const handlePhoneNumberPress = (phoneNumber) => {
   const cleanedPhoneNumber = cleanPhoneNumber(phoneNumber);
@@ -34,8 +31,7 @@ const handlePhoneNumberPress = (phoneNumber) => {
   };
   call(args).catch((error) => console.error("Error making phone call", error));
 };
-
-const renderItem = ({ item }) => (
+const ContactItem = ({ item }) => (
   <TouchableOpacity onPress={() => handlePhoneNumberPress(item.phoneNumber)}>
     <View style={styles.contactContainer}>
       <View style={styles.topTextContainer}>
@@ -51,52 +47,67 @@ const renderItem = ({ item }) => (
     </View>
   </TouchableOpacity>
 );
+
+const ContactSection = ({ title, data, expanded, onPress }) => (
+  <View style={styles.container}>
+    <TouchableOpacity onPress={onPress}>
+      <View style={styles.layoutAnimationHeadingContainer}>
+        <Text style={styles.layoutAnimationHeadingText}>{title}</Text>
+        <Text>{expanded ? "Stäng" : "Öppna"}</Text>
+      </View>
+    </TouchableOpacity>
+    {expanded && (
+      <View style={styles.tile}>
+        <FlatList
+          data={data}
+          renderItem={({ item }) => <ContactItem item={item} />}
+          keyExtractor={(item) => item.id}
+        />
+      </View>
+    )}
+  </View>
+);
+
 function ContactPage() {
   const [loading, setLoading] = useState(true);
   const [contacts, setContacts] = useState([]);
-  const [contactsManagement, setContactsManagment] = useState([]);
-  const [contactsSales, setContactsSales] = useState([]);
-  const [expandedWorkerSection, setExpandedWorkerSection] = useState(false);
-  const [expanededManagementSection, setExpandedManagementSection] = useState(false);
-  const [expanededsalesSection,setExpandedSalesSection] = useState(false);
-    useState(false);
-  useState(false);
+  const [expandedSections, setExpandedSections] = useState({
+    worker: false,
+    management: false,
+    sales: false,
+  });
 
   useEffect(() => {
-    async function fetchDB() {
+    async function fetchContacts() {
       try {
         const docRef = collection(FIRESTORE_DB, "Contacts");
         const q = query(docRef, orderBy("firstName", "asc"));
         const docSnapshot = await getDocs(q);
         const tempContacts = [];
-        const tempManagementContact = [];
-        const tempSalesContact = [];
         docSnapshot.forEach((contact) => {
-          const tempContact = {
+          tempContacts.push({
             id: contact.id,
-            firstName: contact.data().firstName,
-            lastName: contact.data().lastName,
-            phoneNumber: contact.data().phoneNumber,
-            email: contact.data().email,
-            position: contact.data().position,
-          };
-          if (tempContact.position === "ledning") {
-            tempManagementContact.push(tempContact);
-          } else if (tempContact.position === "säljare") {
-            tempSalesContact.push(tempContact);
-          } else tempContacts.push(tempContact);
+            ...contact.data(),
+          });
         });
-        setContactsSales(tempSalesContact);
-        setContactsManagment(tempManagementContact);
         setContacts(tempContacts);
       } catch (error) {
-        console.log("this is the error msg:", error);
+        console.error("Error fetching contacts:", error);
       } finally {
         setLoading(false);
       }
     }
-    fetchDB();
+    fetchContacts();
   }, []);
+
+  const toggleSection = (section) => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    setExpandedSections({
+      ...expandedSections,
+      [section]: !expandedSections[section],
+    });
+  };
+
   return (
     <>
       <Text style={styles.headerText}>Medarbetare</Text>
@@ -106,87 +117,26 @@ function ContactPage() {
         </View>
       ) : (
         <>
-          <View style={styles.container}>
-            <TouchableOpacity
-              onPress={() => {
-                LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-                setExpandedWorkerSection(!expandedWorkerSection);
-              }}
-            >
-              <View style={styles.layoutAnimationHeadingContainer}>
-                <Text style={styles.layoutAnimationHeadingText}>
-                  Entrepenad
-                </Text>
-                <Text> {expandedWorkerSection ? "Stäng" : "Öppna"}</Text>
-              </View>
-            </TouchableOpacity>
-            {expandedWorkerSection && (
-              <View style={styles.tile}>
-                <View>
-                  <Text>installatörer</Text>
-                </View>
-                <FlatList
-                  data={contacts}
-                  renderItem={renderItem}
-                  keyExtractor={(item) => item.id}
-                />
-              </View>
+          <ContactSection
+            title="Entrepenad"
+            data={contacts.filter(
+              (c) => c.position !== "ledning" && c.position !== "säljare"
             )}
-          </View>
-          <View style={styles.container}>
-            <TouchableOpacity
-              onPress={() => {
-                LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-                setExpandedManagementSection(!expanededManagementSection);
-              }}
-            >
-              <View style={styles.layoutAnimationHeadingContainer}>
-                <Text style={styles.layoutAnimationHeadingText}>
-                  Ledning Entrepenad
-                </Text>
-                <Text> {expandedWorkerSection ? "Stäng" : "Öppna"}</Text>
-              </View>
-            </TouchableOpacity>
-            {expanededManagementSection && (
-              <View style={styles.tile}>
-                <View>
-                  <Text>LEDNING</Text>
-                </View>
-                <FlatList
-                  data={contactsManagement}
-                  renderItem={renderItem}
-                  keyExtractor={(item) => item.id}
-                />
-              </View>
-            )}
-          </View>
-          <View style={styles.container}>
-            <TouchableOpacity
-              onPress={() => {
-                LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-                setExpandedSalesSection(!expanededsalesSection);
-              }}
-            >
-              <View style={styles.layoutAnimationHeadingContainer}>
-                <Text style={styles.layoutAnimationHeadingText}>
-                  Säljare
-                </Text>
-                <Text> {expanededsalesSection ? "Stäng" : "Öppna"}</Text>
-              </View>
-            </TouchableOpacity>
-            {expanededsalesSection && (
-              <View style={styles.tile}>
-                <View>
-                  <Text>Säljare</Text>
-                </View>
-                <FlatList
-                  data={contactsSales}
-                  renderItem={renderItem}
-                  keyExtractor={(item) => item.id}
-                />
-              </View>
-            )}
-          </View>
+            expanded={expandedSections.worker}
+            onPress={() => toggleSection("worker")}
+          />
+          <ContactSection
+            title="Ledning Entrepenad"
+            data={contacts.filter((c) => c.position === "ledning")}
+            expanded={expandedSections.management}
+            onPress={() => toggleSection("management")}
+          />
+          <ContactSection
+            title="Säljare"
+            data={contacts.filter((c) => c.position === "säljare")}
+            expanded={expandedSections.sales}
+            onPress={() => toggleSection("sales")}
+          />
         </>
       )}
     </>
@@ -194,12 +144,13 @@ function ContactPage() {
 }
 
 export default ContactPage;
+
 const styles = StyleSheet.create({
   tile: {
     borderWidth: 2,
     borderColor: "#d6d9da",
     borderRadius: 20,
-    padding:10,
+    padding: 10,
   },
   container: {
     marginTop: 30,
@@ -207,8 +158,8 @@ const styles = StyleSheet.create({
     borderColor: "#d6d7da",
     borderWidth: 0.8,
     borderRadius: 15,
-    paddingHorizontal:20,
-    paddingTop:20,
+    paddingHorizontal: 20,
+    paddingTop: 20,
   },
   layoutAnimationHeadingContainer: {
     flexDirection: "row",
@@ -236,7 +187,7 @@ const styles = StyleSheet.create({
   },
   contactText: {
     fontSize: 20,
-    marginTop: 25,
+    marginTop: 5,
   },
   phoneNumberText: {
     fontSize: 20,

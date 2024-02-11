@@ -63,7 +63,7 @@ function LatHund({ navigation }) {
           </Pressable>
         )}
       />
-    </View>
+      </View>
   );
 }
 
@@ -71,16 +71,17 @@ export default LatHund;
 
 const styles = StyleSheet.create({
   headerText: {
-    marginTop: 1,
-    marginBottom: 10,
+    marginTop: 15,
     alignSelf: "center",
     fontSize: 18,
   },
+
   imageContainer: {
     flex:1,
     justifyContent: "center",
     alignItems: "center",
-    padding:20
+    borderBottomColor:"black",
+    borderBottomWidth:1,
   },
   imageSmall: {
     width: windowWidth * 0.7,
