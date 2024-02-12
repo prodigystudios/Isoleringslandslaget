@@ -13,7 +13,6 @@ import {
 import call from "react-native-phone-call";
 import { getDocs, collection, orderBy, query } from "firebase/firestore";
 import { FIRESTORE_DB } from "./firebase";
-
 if (
   Platform.OS === "android" &&
   UIManager.setLayoutAnimationEnabledExperimental
