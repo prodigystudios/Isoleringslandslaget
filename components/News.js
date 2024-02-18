@@ -28,7 +28,6 @@ export default function News() {
   const [news, SetNews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
-  const [savedData, setSavedData] = useState(0);
   //fix so this only runs when new data is added to the database!
   useEffect(() => {
     async function fetchDB() {

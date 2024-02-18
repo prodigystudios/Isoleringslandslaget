@@ -61,21 +61,7 @@ export default function NewsModal(props) {
         </View>
       </Modal>
     );
-  } else if (!unReadNews) {
-    return (
-      <>
-        <Modal animationType="slide" transparent={true}>
-          <View style={styles.newsModalContainer}>
-          <View style={styles.newsModalContextContainer}>
-            <Text style={styles.contextText}>
-              Inga nya nyheter för tillfället!
-            </Text>
-          </View>
-          </View>
-        </Modal>
-      </>
-    );
-  }
+  } 
 }
 const styles = StyleSheet.create({
   newsModalContainer: {

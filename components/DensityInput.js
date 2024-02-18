@@ -1,7 +1,7 @@
 import { StyleSheet, View, TextInput, Pressable, Text } from "react-native";
-import { Signal, signal } from "@preact/signals-react";
 import { useEffect, useState } from "react";
 import { SelectList } from "react-native-dropdown-select-list";
+import { constructionTypes, insulationtypes } from "../constants/data";
 
 function DensityInputs(props) {
   const [enterdSquareMeter, setSquareMeter] = useState(0);
@@ -11,18 +11,7 @@ function DensityInputs(props) {
   const [selectedConstrutionType, setSelectedConstructionType] = useState("");
   const [calculatedDensity, setCalculatedDensity] = useState(0);
   const [shouldRunEffect, setShouldRunEffect] = useState(false);
-  const insulationtypes = [
-    { key: 14, value: "Cellulosa ekovilla 14 kg" },
-    { key: 15.5, value: "Glasull suprafil 15.5 kg" },
-    { key: 14, value: "Träull topcell 14 kg" },
-    { key: 12, value: "Träull topcell 12 kg" },
-  ];
-  const constructionTypes = [
-    { key: 1, value: "Vägg/Snedtak" },
-    { key: 2, value: "Vind" },
-    { key: 3, value: "BottenBjälklag" },
-    { key: 4, value: "MellanBjälklag" },
-  ];
+ 
   function addSquareMeter(enterdValue) {
     setSquareMeter(parseInt(enterdValue));
   }
