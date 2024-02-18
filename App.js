@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -17,6 +17,9 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Platform } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { FIRESTORE_DB } from "./components/firebase";
+import { getDocs, collection, orderBy, query } from "firebase/firestore";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import ModalView from "./components/ModalView";
 import DensityInputs from "./components/DensityInput";
 import LatHund from "./components/LatHund";
@@ -25,8 +28,8 @@ import MainHeader from "./components/MainHeader";
 import News from "./components/News";
 import ContactPage from "./components/ContactPage";
 import NewsModalView from "./components/NewsModalView";
-
 // import { createDrawerNavigator } from "@react-navigation/drawer";
+
 const CustomHeader = () => (
   <View
     style={{
@@ -343,7 +346,7 @@ function HomeScreen({}) {
             />
           </View>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={LoadControll}>
           <View style={styles.buttonContainerYellow}>
             <Image
               style={{ width: 215, height: 215 }}
@@ -355,6 +358,7 @@ function HomeScreen({}) {
     </View>
   );
 }
+
 function NewsScreen() {
   return (
     <>
@@ -469,11 +473,70 @@ const LoadControll = () => {
 };
 
 export default function App() {
+  const [news, setNews] = useState([]);
+  const [isNewNews, setIsNewNews] = useState(false);
+  const [savedData, setSavedData] = useState("");
+  useEffect(() => {
+    if (news.length == 0) {
+      console.log("how many times does this run");
+      fetchDB();
+    }
+  }, []);
+  async function fetchDB() {
+    try {
+      const docRef = collection(FIRESTORE_DB, "News");
+      const q = query(docRef, orderBy("date", "desc"));
+      const docSnapshot = await getDocs(q);
+      const tempFetchedNews = [];
+      docSnapshot.forEach((news) => {
+        const tempNews = {
+          id: news.id,
+          creator: news.data().creator,
+          date: news.data().date,
+          headLine: news.data().headLine,
+          newsContent: news.data().newsContent,
+        };
+        tempFetchedNews.push(tempNews);
+      });
+      const newsCount = tempFetchedNews.length.toString();
+      setNews(tempFetchedNews);
+      getData(newsCount);
+    } catch (error) {
+      console.log("this is the error msg:", error);
+    }
+  }
+  const storeData = async (value) => {
+    console.log("we are storing data" + value);
+    try {
+      await AsyncStorage.setItem("my-key", value);
+    } catch (error) {
+      console.log("we encounterd an error", error);
+    }
+  };
+  const getData = async (newsCount) => {
+    try {
+      const value = await AsyncStorage.getItem("my-key");
+      if (value !== null) {
+        if (value != newsCount) {
+          setSavedData(value);
+          setIsNewNews(true);
+          await storeData(newsCount);
+        }
+      }
+    } catch (error) {
+      console.log("there is no value stored");
+    }
+  };
+  const getLatestNews = () => {
+    return news.length > 0 ? news[0] : null;
+  };
   return (
     <>
-      <View>
-        <NewsModalView />
-      </View>
+      {isNewNews && (
+        <View>
+          <NewsModalView isNewNews={isNewNews} latestNews={getLatestNews} />
+        </View>
+      )}
       <NavigationContainer theme={theme}>
         <stack.Navigator
           initialRouteName="Home"

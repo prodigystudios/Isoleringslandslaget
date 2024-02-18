@@ -4,58 +4,58 @@ import {
   StyleSheet,
   ActivityIndicator,
   FlatList,
+  ScrollView,
 } from "react-native";
 import { FIRESTORE_DB } from "./firebase";
 import { getDocs, collection, orderBy, query } from "firebase/firestore";
 import { useState, useEffect } from "react";
-
 const renderItem = ({ item }) => (
   <>
-    <View style={styles.newsInformationContainer}>
-      <Text>{item.creator}</Text>
-      <Text> {item.date}</Text>
-    </View>
-    <View style={styles.newsContainer}>
-      <Text style={styles.newsTextHeading}>{item.headLine}</Text>
-      <Text style={styles.newsText}>{item.newsContent}</Text>
-    </View>
+    <ScrollView>
+      <View style={styles.newsInformationContainer}>
+        <Text>{item.creator}</Text>
+        <Text> {item.date}</Text>
+      </View>
+      <View style={styles.newsContainer}>
+        <Text style={styles.newsTextHeading}>{item.headLine}</Text>
+        <Text style={styles.newsText}>{item.newsContent}</Text>
+      </View>
+    </ScrollView>
   </>
 );
 
 export default function News() {
   const [news, SetNews] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [isDataLoaded,setIsDataLoaded] = useState(false);
+  const [isDataLoaded, setIsDataLoaded] = useState(false);
+  const [savedData, setSavedData] = useState(0);
   //fix so this only runs when new data is added to the database!
   useEffect(() => {
-    if(!isDataLoaded){
-      async function fetchDB() {
-        try {
-          const docRef = collection(FIRESTORE_DB, "News");
-          const q = query(docRef, orderBy("date", "asc"));
-          const docSnapshot = await getDocs(q);
-          const tempFetchedNews = [];
-          docSnapshot.forEach((news) => {
-            const tempNews = {
-              id: news.id,
-              creator: news.data().creator,
-              date: news.data().date,
-              headLine: news.data().headLine,
-              newsContent: news.data().newsContent,
-            };
-            tempFetchedNews.push(tempNews);
-          });
-          SetNews(tempFetchedNews);
-        } catch (error) {
-          console.log("this is the error msg:", error);
-        } finally {
-          setLoading(false);
-        }
+    async function fetchDB() {
+      try {
+        const docRef = collection(FIRESTORE_DB, "News");
+        const q = query(docRef, orderBy("date", "desc"));
+        const docSnapshot = await getDocs(q);
+        const tempFetchedNews = [];
+        docSnapshot.forEach((news) => {
+          const tempNews = {
+            id: news.id,
+            creator: news.data().creator,
+            date: news.data().date,
+            headLine: news.data().headLine,
+            newsContent: news.data().newsContent,
+          };
+          tempFetchedNews.push(tempNews);
+        });
+        SetNews(tempFetchedNews);
+      } catch (error) {
+        console.log("this is the error msg:", error);
+      } finally {
+        setLoading(false);
       }
-      fetchDB();
-      setIsDataLoaded(false);
     }
-   
+    fetchDB();
+    setIsDataLoaded(false);
   }, [isDataLoaded]);
   return (
     <>
@@ -91,9 +91,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     marginHorizontal: 2,
-    marginVertical:10,
+    marginVertical: 10,
     paddingVertical: 5,
-    width:"100%"
+    width: "100%",
   },
   newsTextHeading: {
     fontSize: 24,

@@ -39,7 +39,7 @@ const data = [
 ];
 const ImageDetailScreen = ({ route }) => {
   const { selectedImage } = route.params;
-  if (selectedImage === 5) {
+  if (selectedImage === 21) {
     return (
       <>
         <SectionList

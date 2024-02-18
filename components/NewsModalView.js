@@ -1,55 +1,82 @@
-import { View, Modal, Text, StyleSheet, Pressable } from "react-native";
+import {
+  View,
+  Modal,
+  Text,
+  StyleSheet,
+  ActivityIndicator,
+  Pressable,
+} from "react-native";
 import { useState, useEffect } from "react";
 
 export default function NewsModal(props) {
-  const [isModalVisible, setModalVisible] = useState(false);
-  const [isNewPost, setNewPost] = useState(false);
-
+  const [isModalVisible, setModalVisible] = useState(true); // Initially set as true
+  const [latestNews, setLatestNews] = useState(null); // Initially set as null
+  const [unReadNews, setUnReadNews] = useState(false);
   useEffect(() => {
-    const modalTimer = setTimeout(() => {
-      setModalVisible(true);
-    }, 100); // Adjust the delay time as needed
-
-    // Cleanup function to clear the timer
-    return () => clearTimeout(modalTimer);
-  }, []);
-
-  return (
-    <Modal
-      visible={isModalVisible}
-      animationType="slide"
-      transparent={true}
-      onRequestClose={() => {
-        setModalVisible(!isModalVisible);
-      }}
-    >
-      <View style={styles.newsModalContainer}>
-        <View style={styles.newsModalHeadlineContainer}>
-          <Text style={styles.headlineText}>Ny app!!</Text>
-          <Pressable
-            style={styles.closeButton}
-            onPress={() => setModalVisible(!isModalVisible)}
-          >
-            <Text style={styles.closeButtonText}>X</Text>
-          </Pressable>
+    const fetchLatestNews = async () => {
+      try {
+        const latestPost = await props.latestNews();
+        if (latestPost) {
+          console.log(props.isNewNews);
+          setLatestNews(latestPost);
+          setUnReadNews(props.isNewNews);
+          console.log("Latest news fetched:", latestPost + " " + unReadNews);
+        }
+      } catch (error) {
+        console.error("Error fetching latest news:", error);
+      }
+    };
+    fetchLatestNews();
+  }, [props.latestNews]);
+  
+  if (unReadNews) {
+    return (
+      <Modal
+        visible={isModalVisible && latestNews !== null} // Only show modal if latestNews is not null
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => {
+          setModalVisible(false);
+        }}
+      >
+        <View style={styles.newsModalContainer}>
+          {latestNews !== null ? (
+            <>
+              <View style={styles.newsModalHeadlineContainer}>
+                <Text style={styles.headlineText}>{latestNews.headLine}</Text>
+                <Pressable
+                  style={styles.closeButton}
+                  onPress={() => setModalVisible(!isModalVisible)}
+                >
+                  <Text style={styles.closeButtonText}>X</Text>
+                </Pressable>
+              </View>
+              <View style={styles.newsModalContextContainer}>
+                <Text style={styles.contextText}>{latestNews.newsContent}</Text>
+              </View>
+            </>
+          ) : (
+            <ActivityIndicator size="large" color="#0000ff" />
+          )}
         </View>
-        <View style={styles.newsModalContextContainer}>
-          <Text style={styles.contextText}>
-            vi har samlats här idag för konferens. Detta är en ny del i
-            utvecklingen av entreprenad som kommer att lättja eran vardag för
-            att informationen som vi har påpekat från ledningen måste in! Vi
-            måste stärka alla led. Vi har sett brister med appen som ingen
-            verkar använda sig av ändå! Med hjälp av William som har utbildning
-            inom området kodning så har det bollas idéer som ledde till början
-            av denna app. Se nu till att använda denna flitigt för det här skall
-            vara ett hjälpmedel för oss alla.
-          </Text>
-        </View>
-      </View>
-    </Modal>
-  );
+      </Modal>
+    );
+  } else if (!unReadNews) {
+    return (
+      <>
+        <Modal animationType="slide" transparent={true}>
+          <View style={styles.newsModalContainer}>
+          <View style={styles.newsModalContextContainer}>
+            <Text style={styles.contextText}>
+              Inga nya nyheter för tillfället!
+            </Text>
+          </View>
+          </View>
+        </Modal>
+      </>
+    );
+  }
 }
-
 const styles = StyleSheet.create({
   newsModalContainer: {
     marginTop: 150,
@@ -76,7 +103,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 30,
     alignItems: "center",
-    marginHorizontal:12,
+    marginHorizontal: 12,
   },
   contextText: {
     fontSize: 16,
