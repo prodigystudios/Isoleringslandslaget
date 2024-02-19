@@ -1,34 +1,38 @@
-import { StatusBar } from "expo-status-bar";
-import { useEffect, useRef, useState } from "react";
+import { Ionicons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
-  StyleSheet,
-  View,
-  Linking,
-  Image,
-  TouchableOpacity,
-  ScrollView,
-} from "react-native";
-import {
-  NavigationContainer,
   DefaultTheme,
+  NavigationContainer,
   useNavigation,
 } from "@react-navigation/native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Platform } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import { FIRESTORE_DB } from "./components/firebase";
-import { getDocs, collection, orderBy, query } from "firebase/firestore";
-import { densityTypes } from "./constants/data";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import ModalView from "./components/ModalView";
-import DensityInputs from "./components/DensityInput";
-import LatHund from "./components/LatHund";
-import ImageDetailScreen from "./components/ImageDetailScreen";
-import MainHeader from "./components/MainHeader";
-import News from "./components/News";
+import { StatusBar } from "expo-status-bar";
+import { onAuthStateChanged } from "firebase/auth";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
+import {
+  Image,
+  Linking,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import ContactPage from "./components/ContactPage";
+import DensityInputs from "./components/DensityInput";
+import ImageDetailScreen from "./components/ImageDetailScreen";
+import LatHund from "./components/LatHund";
+import LogInScreen from "./components/LogInScreen";
+import MainHeader from "./components/MainHeader";
+import ModalView from "./components/ModalView";
+import News from "./components/News";
 import NewsModalView from "./components/NewsModalView";
+import { FIREBASE_AUTH, FIRESTORE_DB } from "./components/firebase";
+import { densityTypes } from "./constants/data";
+
+export const AuthContext = React.createContext();
 // import { createDrawerNavigator } from "@react-navigation/drawer";
 
 const CustomHeader = () => (
@@ -360,8 +364,21 @@ const LoadControll = () => {
 };
 
 export default function App() {
+  const [user, setUser] = useState(null);
   const [news, setNews] = useState([]);
   const [isNewNews, setIsNewNews] = useState(false);
+  const auth = FIREBASE_AUTH;
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+      } else {
+        setUser(null);
+      }
+    });
+    return unsubscribe;
+  }, [auth]);
+
   useEffect(() => {
     if (news.length == 0) {
       console.log("how many times does this run");
@@ -415,46 +432,72 @@ export default function App() {
   };
   return (
     <>
-      {isNewNews && (
-        <View>
-          <NewsModalView isNewNews={isNewNews} latestNews={getLatestNews} />
-        </View>
-      )}
-      <NavigationContainer theme={theme}>
-        <stack.Navigator
-          initialRouteName="Home"
-          screenOptions={{
-            headerStyle: {
-              backgroundColor: "white",
-            },
-            headerTitleStyle: {
-              color: "white",
-              alignSelf: "center",
-            },
-            headerBackTitleStyle: {
-              fontSize: 20,
-            },
-            headerTintColor: "black",
-          }}
-        >
-          <stack.Screen
-            name="Isoleringslandslaget"
-            component={Root}
-            options={{ headerTitle: () => <CustomHeader />, title: "Hem" }}
-          />
-          <stack.Screen
-            name="mainStack"
-            component={MainStackScreen}
-            options={({ route }) => ({
-              title:
-                route.params && route.params.previousScreenName
-                  ? `Screen from ${route.params.previousScreenName}`
-                  : "Default Title",
-              headerTitle: () => <CustomHeader />,
-            })}
-          />
-        </stack.Navigator>
-      </NavigationContainer>
+      <AuthContext.Provider value={{ user }}>
+        {user ? (
+          //the user is signed in
+          <>
+            {isNewNews && (
+              <View>
+                <NewsModalView
+                  isNewNews={isNewNews}
+                  latestNews={getLatestNews}
+                />
+              </View>
+            )}
+            <NavigationContainer theme={theme}>
+              <stack.Navigator
+                initialRouteName="Home"
+                screenOptions={{
+                  transitionSpec: {
+                    open: { animation: "timing", config: { duration: 1000 } },
+                    close: { animation: "timing", config: { duration: 1000 } },
+                  },
+                  headerStyle: {
+                    backgroundColor: "white",
+                  },
+                  headerTitleStyle: {
+                    color: "white",
+                    alignSelf: "center",
+                  },
+                  headerBackTitleStyle: {
+                    fontSize: 20,
+                  },
+                  headerTintColor: "black",
+                  cardStyleInterpolator: ({ current}) => ({
+                    cardStyle: {
+                      opacity: current.progress,
+                    }
+                  })
+                }
+              }
+              >
+                <stack.Screen
+                  name="Isoleringslandslaget"
+                  component={Root}
+                  options={{
+                    headerTitle: () => <CustomHeader />,
+                    title: "Hem",
+                  }}
+                />
+                <stack.Screen
+                  name="mainStack"
+                  component={MainStackScreen}
+                  options={({ route }) => ({
+                    title:
+                      route.params && route.params.previousScreenName
+                        ? `Screen from ${route.params.previousScreenName}`
+                        : "Default Title",
+                    headerTitle: () => <CustomHeader />,
+                  })}
+                />
+              </stack.Navigator>
+            </NavigationContainer>
+          </>
+        ) : (
+          // the user is not signed in
+          <LogInScreen />
+        )}
+      </AuthContext.Provider>
     </>
   );
 }
