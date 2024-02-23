@@ -1,5 +1,4 @@
 import { Ionicons } from "@expo/vector-icons";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
   DefaultTheme,
@@ -11,6 +10,8 @@ import { StatusBar } from "expo-status-bar";
 import { onAuthStateChanged } from "firebase/auth";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
+import { FIREBASE_AUTH, FIRESTORE_DB } from "./components/firebase";
+import { densityTypes } from "./constants/data";
 import {
   Image,
   Linking,
@@ -20,6 +21,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import ContactPage from "./components/ContactPage";
 import DensityInputs from "./components/DensityInput";
 import ImageDetailScreen from "./components/ImageDetailScreen";
@@ -29,8 +31,7 @@ import MainHeader from "./components/MainHeader";
 import ModalView from "./components/ModalView";
 import News from "./components/News";
 import NewsModalView from "./components/NewsModalView";
-import { FIREBASE_AUTH, FIRESTORE_DB } from "./components/firebase";
-import { densityTypes } from "./constants/data";
+import ProfilScreen from "./components/ProfilScreen";
 
 export const AuthContext = React.createContext();
 // import { createDrawerNavigator } from "@react-navigation/drawer";
@@ -202,6 +203,10 @@ function Root() {
         name="Kontaktlista"
         component={ContactScreen}
       />
+      <Tab.Screen name="Profil" component={ProfilScreen}
+      options={{tabBarIcon:({focused,size}) => (
+        <Ionicons name="person" size={size} color={focused ? "#5f98b0" : "black"}/>
+      )}} />
     </Tab.Navigator>
   );
 }
@@ -463,13 +468,12 @@ export default function App() {
                     fontSize: 20,
                   },
                   headerTintColor: "black",
-                  cardStyleInterpolator: ({ current}) => ({
+                  cardStyleInterpolator: ({ current }) => ({
                     cardStyle: {
                       opacity: current.progress,
-                    }
-                  })
-                }
-              }
+                    },
+                  }),
+                }}
               >
                 <stack.Screen
                   name="Isoleringslandslaget"
