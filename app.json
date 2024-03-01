@@ -2,15 +2,15 @@
   "expo": {
     "name": "Isoleringslandslaget",
     "slug": "isoleringslandslagetapp",
-    "version": "1.0.8",
+    "version": "1.0.9",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/appstore.png",
     "userInterfaceStyle": "light",
-    "backgroundColor": "white",
+    "backgroundColor": "#ffffff",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "white"
+      "backgroundColor": "#ffffff"
     },
     "assetBundlePatterns": [
       "**/*"

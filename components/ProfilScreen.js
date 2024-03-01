@@ -8,7 +8,9 @@ const ProfilScreen = () => {
     useEffect(() => {
         // Assuming you have already initialized Firebase in your app
         const currentUser = FIREBASE_AUTH.currentUser;
-        currentUser.displayName = "william ali";
+        // Set the user in state
+        // create fuction to set user
+        // currentUser.displayName = "william ali";
         setUser(currentUser);
     }, []);
 
@@ -25,9 +27,9 @@ const ProfilScreen = () => {
 
     return (
         <View>
-            <Text>Welcome, {user ? user.displayName : 'Guest'}</Text>
+            <Text>Välkommen, {user ? user.displayName : 'Guest'}</Text>
             {/* Add more profile information here */}
-            <Button title="Logout" onPress={handleLogout} />
+            <Button title="Logga ut" onPress={handleLogout} />
         </View>
     );
 };

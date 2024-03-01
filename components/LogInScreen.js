@@ -19,7 +19,6 @@ const LogInScreen = () => {
       .then((userCredential) => {
         // Login successful, do something
         const user = userCredential.user;
-        user.displayName = "Test";
         console.log("User logged in:", user);
       })
       .catch((error) => {
