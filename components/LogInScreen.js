@@ -30,7 +30,7 @@ const LogInScreen = () => {
     <>
       <View style={styles.container}>
         <Image
-          source={require("../assets/IsoleringsLandslaget.png")}
+          source={require("../assets/isoleringslandslagetHeader.png")}
           style={styles.logInImage}
         />
         <TextInput

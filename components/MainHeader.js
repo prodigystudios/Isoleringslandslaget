@@ -4,7 +4,7 @@ function MainHeader() {
   return (
     <Image
       style={styles.mainHeader}
-      source={require("../assets/IsoleringsLandslaget.png")}
+      source={require("../assets/isoleringslandslagetHeader.png")}
     />
   );
 }
@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
   mainHeader: {
     alignSelf: "center",
     resizeMode: "contain",
-    width: 100,
+    width: 300,
     height: 100,
     marginTop: 10,
   },

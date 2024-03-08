@@ -10,7 +10,7 @@ const ProfilScreen = () => {
         const currentUser = FIREBASE_AUTH.currentUser;
         // Set the user in state
         // create fuction to set user
-        // currentUser.displayName = "william ali";
+        
         setUser(currentUser);
     }, []);
 
@@ -20,7 +20,7 @@ const ProfilScreen = () => {
                 setUser(null);
                 console.log('User logged out successfully');
             })
-            .catch((error) => {
+            .catch((error) => {ß
                 console.log('Error logging out:', error);
             });
     };

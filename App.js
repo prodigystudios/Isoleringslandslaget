@@ -32,6 +32,7 @@ import ModalView from "./components/ModalView";
 import News from "./components/News";
 import NewsModalView from "./components/NewsModalView";
 import ProfilScreen from "./components/ProfilScreen";
+import LoadingDocks from "./components/loadingDocksScreen";
 
 export const AuthContext = React.createContext();
 // import { createDrawerNavigator } from "@react-navigation/drawer";
@@ -46,7 +47,7 @@ const CustomHeader = () => (
   >
     <Image
       source={require("./assets/isoleringslandslagetHeader.png")}
-      style={{ width: 125, height: 40 }}
+      style={{ width: 180, height: 40 }}
     />
   </View>
 );
@@ -145,8 +146,9 @@ const theme = {
 function MainStackScreen() {
   return (
     <stack.Navigator>
-      <stack.Screen name="lathund" component={LatHundScreen} />
+      <stack.Screen name="Lathund" component={LatHundScreen} />
       <stack.Screen name="Kalkylator" component={DensityCalculationScreen} />
+      <stack.Screen name="Lastplatser" component={LoadingDocksScreen} />
       <stack.Screen
         name="ImageDetailScreen"
         component={ImageDetailScreen}
@@ -203,10 +205,19 @@ function Root() {
         name="Kontaktlista"
         component={ContactScreen}
       />
-      <Tab.Screen name="Profil" component={ProfilScreen}
-      options={{tabBarIcon:({focused,size}) => (
-        <Ionicons name="person" size={size} color={focused ? "#5f98b0" : "black"}/>
-      )}} />
+      <Tab.Screen
+        name="Profil"
+        component={ProfilScreen}
+        options={{
+          tabBarIcon: ({ focused, size }) => (
+            <Ionicons
+              name="person"
+              size={size}
+              color={focused ? "#5f98b0" : "black"}
+            />
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
 }
@@ -220,9 +231,14 @@ function HomeScreen({}) {
   };
   const navigateToLathund = () => {
     navigation.navigate("mainStack", {
-      screen: "lathund",
+      screen: "Lathund",
     });
   };
+  const navigateToLoadingSites = () => {
+    navigation.navigate("mainStack", {
+      screen: "Lastplatser",
+    });
+  }
   return (
     <View style={styles.menuButtonContainer}>
       <ScrollView>
@@ -247,6 +263,14 @@ function HomeScreen({}) {
             <Image
               style={{ width: 215, height: 215 }}
               source={require("./assets/egenkontroll.png")}
+            />
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={navigateToLoadingSites}>
+          <View style={styles.buttonContainerBlue}>
+            <Image
+              style={{ width: 215, height: 215 }}
+              source={require("./assets/truckLoad.png")}
             />
           </View>
         </TouchableOpacity>
@@ -344,6 +368,14 @@ function DensityCalculationScreen({ navigation }) {
     </>
   );
 }
+function LoadingDocksScreen()  {
+  return (
+    <View>
+      <MainHeader />
+      <LoadingDocks />
+    </View>
+  );
+}
 function ContactScreen() {
   return (
     <ScrollView>
@@ -355,7 +387,6 @@ function ContactScreen() {
 }
 const LoadControll = () => {
   const url = "https://eu.jotform.com/app/232263104050338/211592860500046";
-
   // Open the link
   Linking.openURL(url)
     .then((supported) => {
@@ -512,14 +543,14 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   buttonContainerYellow: {
-    backgroundColor: "#f08513",
+    backgroundColor: "#0ca8dc",
     borderRadius: 10,
     padding: 20,
     alignItems: "center",
     marginBottom: 10,
   },
   buttonContainerBlue: {
-    backgroundColor: "#4287f5",
+    backgroundColor: "#005a77",
     borderRadius: 10,
     padding: 20,
     alignItems: "center",

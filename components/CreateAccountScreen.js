@@ -22,7 +22,7 @@ const CreateAccountScreen = () => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
                 console.error('Sign up error:', errorCode, errorMessage);
-            });
+            }); 
     };
 
     return (
